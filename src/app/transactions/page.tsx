@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
 import TransactionBadge from '@/components/ui/TransactionBadge';
 import NewTransactionModal from '@/components/ui/NewTransactionModal';
+import TransactionList from '@/components/ui/TransactionList';
 import { getTransactions, deleteTransaction } from '@/lib/api';
 import { formatDate, formatMoney, CATEGORIES } from '@/lib/utils';
 import type { Transaction, TransactionFilters } from '@/types';
@@ -162,85 +163,99 @@ export default function TransactionsPage() {
           )}
         </div>
 
-        {/* Table */}
-        <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
-          {loading ? (
-            <div className="p-6 space-y-3">
-              {[0,1,2,3,4,5].map(i => (
-                <div key={i} className="h-10 bg-gray-50 rounded animate-pulse" />
-              ))}
-            </div>
-          ) : transactions.length === 0 ? (
-            <div className="py-16 text-center">
-              <p className="text-sm text-gray-500">No hay transacciones con esos filtros</p>
-            </div>
-          ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-5 py-3">
-                    Fecha
-                  </th>
-                  <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-3 py-3">
-                    Descripción
-                  </th>
-                  <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-3 py-3">
-                    Categoría
-                  </th>
-                  <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-3 py-3">
-                    Tipo
-                  </th>
-                  <th className="text-right text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-5 py-3">
-                    Monto
-                  </th>
-                  <th className="w-10"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {transactions.map((tx) => (
-                  <tr key={tx.id} className="group hover:bg-gray-50 transition-colors">
-                    <td className="px-5 py-3 text-[11.5px] text-gray-400 whitespace-nowrap">
-                      {formatDate(tx.date)}
-                    </td>
-                    <td className="px-3 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm">{getCategoryEmoji(tx.category)}</span>
-                        <span className="text-[12.5px] text-gray-800">
-                          {tx.description || tx.category}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-3 py-3 text-[12px] text-gray-500">{tx.category}</td>
-                    <td className="px-3 py-3">
-                      <TransactionBadge type={tx.type} />
-                    </td>
-                    <td className="px-5 py-3 text-right">
-                      <span
-                        className={`font-mono text-[13px] font-medium ${
-                          tx.type === 'income' ? 'text-[#2d8a5e]' : 'text-[#c04040]'
-                        }`}
-                      >
-                        {tx.type === 'income' ? '+' : '−'}{formatMoney(tx.amount)}
-                      </span>
-                    </td>
-                    <td className="px-3 py-3">
-                      <button
-                        onClick={() => handleDelete(tx.id)}
-                        disabled={deletingId === tx.id}
-                        className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-400 transition-all disabled:opacity-30"
-                      >
-                        <Trash2 size={13} />
-                      </button>
-                    </td>
-                  </tr>
+        {/* Contenedor de Vistas (Mobile/Desktop) */}
+        <div className="space-y-4">
+          {/* Mobile View: List (<768px) */}
+          <div className="md:hidden">
+            <TransactionList
+              transactions={transactions}
+              loading={loading}
+              onDelete={handleDelete}
+              deletingId={deletingId}
+              getCategoryEmoji={getCategoryEmoji}
+            />
+          </div>
+
+          {/* Desktop View: Table (>=768px) */}
+          <div className="hidden md:block bg-white border border-gray-100 rounded-xl overflow-hidden">
+            {loading ? (
+              <div className="p-6 space-y-3">
+                {[0,1,2,3,4,5].map(i => (
+                  <div key={i} className="h-10 bg-gray-50 rounded animate-pulse" />
                 ))}
-              </tbody>
-            </table>
-          )}
+              </div>
+            ) : transactions.length === 0 ? (
+              <div className="py-16 text-center">
+                <p className="text-sm text-gray-500">No hay transacciones con esos filtros</p>
+              </div>
+            ) : (
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-5 py-3">
+                      Fecha
+                    </th>
+                    <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-3 py-3">
+                      Descripción
+                    </th>
+                    <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-3 py-3">
+                      Categoría
+                    </th>
+                    <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-3 py-3">
+                      Tipo
+                    </th>
+                    <th className="text-right text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-5 py-3">
+                      Monto
+                    </th>
+                    <th className="w-10"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {transactions.map((tx) => (
+                    <tr key={tx.id} className="group hover:bg-gray-50 transition-colors">
+                      <td className="px-5 py-3 text-[11.5px] text-gray-400 whitespace-nowrap">
+                        {formatDate(tx.date)}
+                      </td>
+                      <td className="px-3 py-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm">{getCategoryEmoji(tx.category)}</span>
+                          <span className="text-[12.5px] text-gray-800">
+                            {tx.description || tx.category}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-3 text-[12px] text-gray-500">{tx.category}</td>
+                      <td className="px-3 py-3">
+                        <TransactionBadge type={tx.type} />
+                      </td>
+                      <td className="px-5 py-3 text-right">
+                        <span
+                          className={`font-mono text-[13px] font-medium ${
+                            tx.type === 'income' ? 'text-[#2d8a5e]' : 'text-[#c04040]'
+                          }`}
+                        >
+                          {tx.type === 'income' ? '+' : '−'}{formatMoney(tx.amount)}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3">
+                        <button
+                          onClick={() => handleDelete(tx.id)}
+                          disabled={deletingId === tx.id}
+                          className="opacity-0 group-hover:opacity-100 text-gray-300 hover:text-red-400 transition-all disabled:opacity-30"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
 
           {/* Pagination */}
           {pagination.pages > 1 && (
-            <div className="border-t border-gray-100 px-5 py-3 flex items-center justify-between">
+            <div className="bg-white border md:border-t-0 md:rounded-t-none border-gray-100 rounded-xl px-5 py-3 flex items-center justify-between shadow-sm md:shadow-none">
               <p className="text-[11.5px] text-gray-400">
                 Página {pagination.page} de {pagination.pages}
               </p>
@@ -248,14 +263,14 @@ export default function TransactionsPage() {
                 <button
                   onClick={() => setFilter('page', pagination.page - 1)}
                   disabled={pagination.page === 1}
-                  className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 border border-gray-200 rounded-lg"
+                  className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 border border-gray-200 rounded-lg bg-white"
                 >
                   <ChevronLeft size={13} />
                 </button>
                 <button
                   onClick={() => setFilter('page', pagination.page + 1)}
                   disabled={pagination.page === pagination.pages}
-                  className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 border border-gray-200 rounded-lg"
+                  className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 border border-gray-200 rounded-lg bg-white"
                 >
                   <ChevronRight size={13} />
                 </button>
