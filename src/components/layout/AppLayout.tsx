@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Sidebar from '@/components/layout/Sidebar';
+import BottomNav from '@/components/layout/BottomNav';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
@@ -27,8 +28,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      <Sidebar />
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      {/* Sidebar — desktop only */}
+      <div className="hidden md:flex md:flex-shrink-0">
+        <Sidebar />
+      </div>
+
+      {/* Main scrollable area */}
+      <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
+        {children}
+      </main>
+
+      {/* Bottom nav — mobile only */}
+      <BottomNav />
     </div>
   );
 }
