@@ -10,12 +10,21 @@ import {
   Tag,
   LogOut,
   TrendingUp,
+  Home,
+  Settings,
+  ListTree,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
   { href: '/transactions', label: 'Movimientos', icon: ArrowLeftRight },
-  { href: '/categories', label: 'Categorías', icon: Tag },
+  { href: '/categories', label: 'Reportes', icon: Tag },
+  { href: '/hogar', label: 'Mi Hogar', icon: Home },
+];
+
+const configItems = [
+  { href: '/settings/categories', label: 'Gestión Categorías', icon: Settings },
+  { href: '/settings/rules', label: 'Reglas Automáticas', icon: ListTree },
 ];
 
 export default function Sidebar() {
@@ -63,6 +72,35 @@ export default function Sidebar() {
                 size={15}
                 strokeWidth={active ? 2.2 : 1.8}
                 className={active ? 'text-emerald-400' : ''}
+              />
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Configuración */}
+      <div className="px-5 pt-4 pb-2">
+        <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Configuración</p>
+      </div>
+      <nav className="px-2.5 space-y-0.5 pb-4">
+        {configItems.map(({ href, label, icon: Icon }) => {
+          const active = pathname === href;
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                'flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] transition-all duration-150',
+                active
+                  ? 'bg-white/10 text-white font-medium'
+                  : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+              )}
+            >
+              <Icon
+                size={15}
+                strokeWidth={active ? 2.2 : 1.8}
+                className={active ? 'text-amber-400' : ''}
               />
               {label}
             </Link>

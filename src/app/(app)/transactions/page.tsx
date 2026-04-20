@@ -8,7 +8,7 @@ import TransactionList from '@/components/ui/TransactionList';
 import { getTransactions, deleteTransaction } from '@/lib/api';
 import { formatDate, formatMoney, CATEGORIES } from '@/lib/utils';
 import type { Transaction, TransactionFilters } from '@/types';
-import { Plus, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Trash2, ChevronLeft, ChevronRight, CreditCard } from 'lucide-react';
 
 const TYPE_FILTERS = [
   { value: '', label: 'Todos' },
@@ -222,6 +222,9 @@ export default function TransactionsPage() {
                           <span className="text-[12.5px] text-gray-800">
                             {tx.description || tx.category}
                           </span>
+                          {tx.paymentMethod === 'credit' && (
+                            <CreditCard size={13} className="text-gray-400 ml-1" />
+                          )}
                         </div>
                       </td>
                       <td className="px-3 py-3 text-[12px] text-gray-500">{tx.category}</td>
