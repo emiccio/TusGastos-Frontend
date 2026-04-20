@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, ArrowLeftRight, Tag } from 'lucide-react';
+import { LayoutDashboard, ArrowLeftRight, Tag, Home } from 'lucide-react';
 
 const navItems = [
   { href: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
   { href: '/transactions', label: 'Movimientos', icon: ArrowLeftRight },
   { href: '/categories', label: 'Categorías', icon: Tag },
+  { href: '/hogar', label: 'Hogar', icon: Home },
 ];
 
 export default function BottomNav() {

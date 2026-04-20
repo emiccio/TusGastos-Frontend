@@ -4,6 +4,10 @@ import type {
   TransactionFilters,
   TopCategories,
   Transaction,
+  HouseholdInfo,
+  InviteResponse,
+  Category,
+  CategoryRule,
 } from '@/types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
@@ -79,6 +83,7 @@ export async function createTransaction(data: {
   category: string;
   description?: string;
   date?: string;
+  paymentMethod?: string;
 }): Promise<Transaction> {
   return request('/api/transactions', {
     method: 'POST',
@@ -92,4 +97,53 @@ export async function deleteTransaction(id: string): Promise<void> {
 
 export async function getCategories(monthOffset = 0): Promise<TopCategories> {
   return request(`/api/transactions/categories?monthOffset=${monthOffset}`);
+}
+
+// ── Household ─────────────────────────────────────────────────────
+
+export async function getHousehold(): Promise<HouseholdInfo> {
+  return request('/api/household');
+}
+
+export async function createInvite(): Promise<InviteResponse> {
+  return request('/api/household/invite', { method: 'POST' });
+}
+
+export async function joinHousehold(token: string): Promise<{ alreadyMember: boolean; householdName: string }> {
+  return request('/api/household/join', {
+    method: 'POST',
+    body: JSON.stringify({ token }),
+  });
+}
+
+// ── Categories & Rules ───────────────────────────────────────────
+
+export async function getCustomCategories(): Promise<Category[]> {
+  return request('/api/categories');
+}
+
+export async function createCustomCategory(data: { name: string; icon?: string }): Promise<Category> {
+  return request('/api/categories', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteCustomCategory(id: string): Promise<void> {
+  return request(`/api/categories/${id}`, { method: 'DELETE' });
+}
+
+export async function getRules(): Promise<CategoryRule[]> {
+  return request('/api/categories/rules');
+}
+
+export async function createRule(data: { keyword: string; categoryId: string }): Promise<CategoryRule> {
+  return request('/api/categories/rules', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteRule(id: string): Promise<void> {
+  return request(`/api/categories/rules/${id}`, { method: 'DELETE' });
 }

@@ -16,6 +16,7 @@ export default function NewTransactionModal({ onClose, onSuccess }: NewTransacti
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [paymentMethod, setPaymentMethod] = useState('cash');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -34,7 +35,14 @@ export default function NewTransactionModal({ onClose, onSuccess }: NewTransacti
     setLoading(true);
     setError('');
     try {
-      await createTransaction({ type, amount: parsedAmount, category, description, date });
+      await createTransaction({ 
+        type, 
+        amount: parsedAmount, 
+        category, 
+        description, 
+        date,
+        paymentMethod: type === 'expense' ? paymentMethod : 'cash'
+      });
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -108,6 +116,35 @@ export default function NewTransactionModal({ onClose, onSuccess }: NewTransacti
               ))}
             </select>
           </div>
+
+          {/* Medio de Pago (solo gastos) */}
+          {type === 'expense' && (
+            <div>
+              <label className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1.5 block">
+                Medio de pago
+              </label>
+              <div className="flex gap-2">
+                {[
+                  { id: 'cash', label: 'Efectivo', emoji: '💵' },
+                  { id: 'credit', label: 'Tarjeta', emoji: '💳' },
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setPaymentMethod(m.id)}
+                    className={`flex-1 py-2 text-xs rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 border ${
+                      paymentMethod === m.id
+                        ? 'bg-gray-900 text-white border-transparent'
+                        : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <span>{m.emoji}</span>
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Descripción */}
           <div>

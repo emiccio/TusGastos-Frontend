@@ -1,7 +1,7 @@
 import type { Transaction } from '@/types';
 import TransactionBadge from '@/components/ui/TransactionBadge';
 import { formatDateShort, formatMoney } from '@/lib/utils';
-import { Trash2 } from 'lucide-react';
+import { Trash2, CreditCard } from 'lucide-react';
 
 interface TransactionCardProps {
   transaction: Transaction;
@@ -46,6 +46,12 @@ export default function TransactionCard({
             <span className="text-[12px] text-gray-400 whitespace-nowrap">
               {formatDateShort(transaction.date)}
             </span>
+            {transaction.paymentMethod === 'credit' && (
+              <>
+                <span className="text-gray-300 text-[10px]">&bull;</span>
+                <CreditCard size={14} className="text-gray-400" />
+              </>
+            )}
           </div>
           
           <button
