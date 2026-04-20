@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Loader2, MessageCircle, TrendingUp, ShieldCheck, Zap } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -33,6 +33,54 @@ export default function LoginPage() {
     }
   }
 
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Phone field */}
+      <div className="space-y-1.5">
+        <Label htmlFor="phone-input">Número de WhatsApp</Label>
+        <Input
+          id="phone-input"
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="ej: 5491112345678"
+          autoComplete="tel"
+          autoFocus
+        />
+        <p className="text-xs text-gray-400">
+          Código de país + número (sin + ni espacios)
+        </p>
+      </div>
+
+      {/* Error message */}
+      {error && (
+        <div className="flex items-start gap-2 bg-red-50 border border-red-100 text-red-700 text-sm px-3 py-2.5 rounded-lg">
+          <span className="mt-0.5 shrink-0">⚠</span>
+          <span>{error}</span>
+        </div>
+      )}
+
+      {/* Submit */}
+      <Button
+        type="submit"
+        className="w-full"
+        size="lg"
+        disabled={loading || !phone.trim()}
+      >
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin flex-shrink-0" />
+            <span>Ingresando...</span>
+          </>
+        ) : (
+          'Ingresar'
+        )}
+      </Button>
+    </form>
+  );
+}
+
+export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* ── Left decorative panel (hidden on mobile) ── */}
@@ -121,50 +169,13 @@ export default function LoginPage() {
             </CardHeader>
 
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-5">
-
-                {/* Phone field */}
-                <div className="space-y-1.5">
-                  <Label htmlFor="phone-input">Número de WhatsApp</Label>
-                  <Input
-                    id="phone-input"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="ej: 5491112345678"
-                    autoComplete="tel"
-                    autoFocus
-                  />
-                  <p className="text-xs text-gray-400">
-                    Código de país + número (sin + ni espacios)
-                  </p>
+              <Suspense fallback={
+                <div className="py-6 flex justify-center items-center">
+                  <Loader2 className="w-6 h-6 animate-spin text-emerald-500" />
                 </div>
-
-                {/* Error message */}
-                {error && (
-                  <div className="flex items-start gap-2 bg-red-50 border border-red-100 text-red-700 text-sm px-3 py-2.5 rounded-lg">
-                    <span className="mt-0.5 shrink-0">⚠</span>
-                    <span>{error}</span>
-                  </div>
-                )}
-
-                {/* Submit */}
-                <Button
-                  type="submit"
-                  className="w-full"
-                  size="lg"
-                  disabled={loading || !phone.trim()}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Ingresando...
-                    </>
-                  ) : (
-                    'Ingresar'
-                  )}
-                </Button>
-              </form>
+              }>
+                <LoginForm />
+              </Suspense>
             </CardContent>
           </Card>
 
