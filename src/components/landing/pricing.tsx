@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
+import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
 
 export default function Pricing() {
   return (
@@ -34,7 +35,9 @@ export default function Pricing() {
             </ul>
             
             <Button asChild variant="outline" className="w-full rounded-full h-12 text-base text-gray-900 border-gray-200 hover:bg-gray-50">
-              <Link href="/login">Comenzar gratis</Link>
+              <a href={WHATSAPP_DEEP_LINK} target="_blank" rel="noopener noreferrer">
+                Comenzar gratis
+              </a>
             </Button>
           </div>
 
@@ -69,7 +72,9 @@ export default function Pricing() {
             </ul>
             
             <Button asChild className="w-full rounded-full h-12 text-base bg-emerald-500 hover:bg-emerald-400 text-white border-0">
-              <Link href="/login">Suscribirse a Pro</Link>
+              <a href={WHATSAPP_DEEP_LINK} target="_blank" rel="noopener noreferrer">
+                Suscribirse a Pro
+              </a>
             </Button>
           </div>
         </div>
