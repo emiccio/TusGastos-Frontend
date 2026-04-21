@@ -31,7 +31,6 @@ async function request<T>(
   const res = await fetch(`${API_URL}${path}`, { ...options, headers });
 
   if (res.status === 401) {
-    // Token expirado — limpiar y redirigir al login
     localStorage.removeItem('tg_token');
     localStorage.removeItem('tg_user');
     window.location.href = '/login';
@@ -39,8 +38,10 @@ async function request<T>(
   }
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ error: 'Error desconocido' }));
-    throw new Error(error.error || 'Error en la solicitud');
+    const body = await res.json().catch(() => ({ error: 'Error desconocido' }));
+    const err = new Error(body.message || body.error || 'Error en la solicitud') as any;
+    err.code = body.error;
+    throw err;
   }
 
   return res.json();
@@ -48,10 +49,17 @@ async function request<T>(
 
 // ── Auth ─────────────────────────────────────────────────────────
 
-export async function login(phone: string) {
+export async function requestOtp(phone: string): Promise<{ success: boolean; message: string }> {
+  return request('/api/auth/request-otp', {
+    method: 'POST',
+    body: JSON.stringify({ phone }),
+  });
+}
+
+export async function login(phone: string, code: string) {
   return request<{ token: string; user: { id: string; phone: string; name?: string } }>(
     '/api/auth/login',
-    { method: 'POST', body: JSON.stringify({ phone }) }
+    { method: 'POST', body: JSON.stringify({ phone, code }) }
   );
 }
 
