@@ -8,8 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Loader2, MessageCircle, TrendingUp, ShieldCheck, Zap, ArrowLeft } from 'lucide-react';
-
-const WHATSAPP_DEEP_LINK = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hola+Lul%C3%BA%2C+quiero+registrarme`;
+import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
 
 type Step = 'phone' | 'otp';
 

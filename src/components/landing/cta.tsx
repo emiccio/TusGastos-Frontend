@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
 
 export default function Cta() {
   return (
@@ -18,7 +19,9 @@ export default function Cta() {
               Unirse toma exactamente 30 segundos. Solo tenés que registrarte y mandarle un WhatsApp a Lulu.
             </p>
             <Button asChild size="lg" className="rounded-full px-10 h-14 text-base bg-emerald-500 hover:bg-emerald-400 text-white border-0">
-              <Link href="/login">Comenzar gratis</Link>
+              <a href={WHATSAPP_DEEP_LINK} target="_blank" rel="noopener noreferrer">
+                Comenzar gratis
+              </a>
             </Button>
             <p className="mt-6 text-sm text-gray-500">
               No requiere tarjeta de crédito. Cancelá cuando quieras.

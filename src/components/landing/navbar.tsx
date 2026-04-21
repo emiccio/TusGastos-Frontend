@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { TrendingUp } from 'lucide-react';
+import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
 
 export default function Navbar() {
   return (
@@ -25,7 +26,9 @@ export default function Navbar() {
             Ingresar
           </Link>
           <Button asChild className="bg-white text-gray-900 hover:bg-gray-100 rounded-full px-6">
-            <Link href="/login">Comenzar gratis</Link>
+            <a href={WHATSAPP_DEEP_LINK} target="_blank" rel="noopener noreferrer">
+              Comenzar gratis
+            </a>
           </Button>
         </div>
       </div>

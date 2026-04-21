@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { MessageCircle } from 'lucide-react';
+import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
 
 export default function Hero() {
   return (
@@ -28,10 +29,10 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button asChild size="lg" className="w-full sm:w-auto text-base rounded-full px-8 h-14 bg-emerald-500 hover:bg-emerald-400 text-white">
-            <Link href="/login" className="flex items-center gap-2">
+            <a href={WHATSAPP_DEEP_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
               <MessageCircle className="w-5 h-5" />
               Probar gratis ahora
-            </Link>
+            </a>
           </Button>
           <Button asChild variant="outline" size="lg" className="w-full sm:w-auto text-base rounded-full px-8 h-14 border-white/20 text-white hover:bg-white/10 hover:text-white bg-transparent">
             <Link href="/#demo">
