@@ -13,7 +13,7 @@ export default function Navbar() {
           </div>
           <span className="text-white font-semibold text-lg tracking-tight">TusGastos</span>
         </Link>
-        
+
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
           <Link href="/#features" className="hover:text-white transition-colors">Características</Link>
           <Link href="/#demo" className="hover:text-white transition-colors">Cómo funciona</Link>
@@ -22,10 +22,10 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/login" className="hidden md:block text-sm font-medium text-gray-300 hover:text-white transition-colors">
+          <Link href="/login" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
             Ingresar
           </Link>
-          <Button asChild className="bg-white text-gray-900 hover:bg-gray-100 rounded-full px-6">
+          <Button asChild className="hidden md:block bg-white text-gray-900 hover:bg-gray-100 rounded-full px-6">
             <a href={WHATSAPP_DEEP_LINK} target="_blank" rel="noopener noreferrer">
               Comenzar gratis
             </a>
