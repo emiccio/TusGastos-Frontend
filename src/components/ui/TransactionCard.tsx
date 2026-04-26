@@ -28,7 +28,7 @@ export default function TransactionCard({
             {transaction.description || transaction.category}
           </h3>
           <span
-            className={`font-mono text-[15px] font-semibold whitespace-nowrap mt-0.5 ${
+            className={`tabular-nums text-[15px] font-semibold whitespace-nowrap mt-0.5 ${
               transaction.type === 'income' ? 'text-[#2d8a5e]' : 'text-[#c04040]'
             }`}
           >

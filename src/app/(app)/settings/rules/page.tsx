@@ -148,7 +148,7 @@ export default function RulesSettingsPage() {
                     placeholder="Ej: spotify, netflix, ypf..."
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
-                    className="w-full px-3.5 py-2 text-[13px] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all font-mono"
+                    className="w-full px-3.5 py-2 text-[13px] border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                   />
                 </div>
 
@@ -204,7 +204,7 @@ export default function RulesSettingsPage() {
                   {rules.map((rule) => (
                     <li key={rule.id} className="flex items-center justify-between px-5 py-3.5">
                       <div className="flex flex-col md:flex-row md:items-center gap-1.5 md:gap-3">
-                        <span className="font-mono text-[12px] font-semibold text-gray-800 bg-gray-100 px-2 py-0.5 rounded">
+                        <span className="text-[12px] font-semibold text-gray-800 bg-gray-100 px-2 py-0.5 rounded">
                           {rule.keyword}
                         </span>
                         <ArrowRight size={13} className="text-gray-300 hidden md:block" />
