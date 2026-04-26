@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { requestOtp, login as apiLogin, logout as apiLogout } from '@/lib/api';
+import { requestOtp, login as apiLogin, logout as apiLogout, me as apiMe } from '@/lib/api';
 import type { User } from '@/types';
 
 interface AuthContextType {
@@ -10,6 +10,7 @@ interface AuthContextType {
   requestOtp: (phone: string) => Promise<void>;
   login: (phone: string, code: string) => Promise<void>;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -18,15 +19,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const refreshUser = async () => {
+    try {
+      const data = await apiMe();
+      if (data.user) {
+        localStorage.setItem('tg_user', JSON.stringify(data.user));
+        setUser(data.user);
+      }
+    } catch (err) {
+      console.error('Error refreshing user:', err);
+    }
+  };
+
   useEffect(() => {
     const stored = localStorage.getItem('tg_user');
     const token = localStorage.getItem('tg_token');
-    if (stored && token) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch (_) { }
+    
+    if (token) {
+      if (stored) {
+        try {
+          setUser(JSON.parse(stored));
+        } catch (_) { }
+      }
+      // Siempre intentar refrescar si hay token
+      refreshUser().finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   async function handleRequestOtp(phone: string) {
@@ -51,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, requestOtp: handleRequestOtp, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, requestOtp: handleRequestOtp, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

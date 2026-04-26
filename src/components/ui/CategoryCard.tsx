@@ -26,7 +26,7 @@ export default function CategoryCard({ category, index, totalExpenses }: Categor
           {pct}%
         </span>
       </div>
-      <span className="font-mono text-[14.5px] font-bold text-[#c04040]">
+      <span className="text-[14.5px] font-bold text-[#c04040] tabular-nums tracking-tight">
         {formatMoney(category.total)}
       </span>
     </div>

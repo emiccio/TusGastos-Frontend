@@ -15,14 +15,16 @@ import {
   ListTree,
 } from 'lucide-react';
 
+import HouseholdSelector from '@/components/layout/HouseholdSelector';
+
 const navItems = [
   { href: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
   { href: '/transactions', label: 'Movimientos', icon: ArrowLeftRight },
   { href: '/categories', label: 'Reportes', icon: Tag },
-  { href: '/hogar', label: 'Mi Hogar', icon: Home },
 ];
 
 const configItems = [
+  { href: '/hogar', label: 'Mi Hogar', icon: Home },
   { href: '/settings/categories', label: 'Gestión Categorías', icon: Settings },
   { href: '/settings/rules', label: 'Reglas Automáticas', icon: ListTree },
 ];
@@ -36,22 +38,17 @@ export default function Sidebar() {
   return (
     <aside className="w-[220px] min-w-[220px] h-screen sticky top-0 bg-gray-950 flex flex-col">
       {/* Logo */}
-      <div className="px-5 pt-6 pb-5 border-b border-white/5">
+      <div className="px-5 pt-6 pb-2 border-b border-white/5">
         <div className="flex items-center gap-2.5 mb-1">
           <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0">
             <TrendingUp size={13} className="text-white" strokeWidth={2.5} />
           </div>
           <p className="text-[16px] font-semibold text-white tracking-tight">TusGastos</p>
         </div>
-        <p className="text-[11px] text-gray-500 pl-9">Dashboard financiero</p>
-        <div className="inline-flex items-center gap-1.5 mt-3 ml-9 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-medium px-2.5 py-1 rounded-full">
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          </span>
-          Lulu activa
-        </div>
       </div>
+
+      {/* Household Selector */}
+      <HouseholdSelector />
 
       {/* Nav */}
       <nav className="flex-1 pt-4 px-2.5 space-y-0.5">

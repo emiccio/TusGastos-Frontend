@@ -57,7 +57,16 @@ export async function requestOtp(phone: string): Promise<{ success: boolean; mes
 }
 
 export async function login(phone: string, code: string) {
-  return request<{ token: string; user: { id: string; phone: string; name?: string } }>(
+  return request<{
+    token: string;
+    user: {
+      id: string;
+      phone: string;
+      name?: string;
+      plan: 'FREE' | 'PREMIUM';
+      activeHouseholdId?: string;
+    }
+  }>(
     '/api/auth/login',
     { method: 'POST', body: JSON.stringify({ phone, code }) }
   );
@@ -65,6 +74,10 @@ export async function login(phone: string, code: string) {
 
 export async function logout() {
   return request('/api/auth/logout', { method: 'POST' });
+}
+
+export async function me() {
+  return request<{ user: any }>('/api/auth/me');
 }
 
 // ── Transactions ─────────────────────────────────────────────────
@@ -122,6 +135,24 @@ export async function joinHousehold(token: string): Promise<{ alreadyMember: boo
   return request('/api/household/join', {
     method: 'POST',
     body: JSON.stringify({ token }),
+  });
+}
+
+export async function listHouseholds(): Promise<Array<{ id: string; name: string; isOwner: boolean; plan: string; role: string }>> {
+  return request('/api/household/list');
+}
+
+export async function switchHousehold(householdId: string): Promise<{ success: boolean; activeHouseholdId: string }> {
+  return request('/api/household/switch', {
+    method: 'POST',
+    body: JSON.stringify({ householdId }),
+  });
+}
+
+export async function createHousehold(name: string): Promise<HouseholdInfo> {
+  return request('/api/household', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
   });
 }
 
