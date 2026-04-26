@@ -24,7 +24,7 @@ const navItems = [
 ];
 
 const configItems = [
-  { href: '/hogar', label: 'Mi Hogar', icon: Home },
+  { href: '/settings/hogar', label: 'Mi Hogar', icon: Home },
   { href: '/settings/categories', label: 'Gestión Categorías', icon: Settings },
   { href: '/settings/rules', label: 'Reglas Automáticas', icon: ListTree },
 ];

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, ArrowLeftRight, Tag, Home, Plus } from 'lucide-react';
+import { LayoutDashboard, ArrowLeftRight, Tag, Settings, Plus } from 'lucide-react';
 import NewTransactionModal from '@/components/ui/NewTransactionModal';
 
 const leftItems = [
@@ -14,7 +14,7 @@ const leftItems = [
 
 const rightItems = [
   { href: '/categories', label: 'Categorías', icon: Tag },
-  { href: '/hogar', label: 'Hogar', icon: Home },
+  { href: '/settings', label: 'Ajustes', icon: Settings },
 ];
 
 export default function BottomNav() {
@@ -41,7 +41,7 @@ export default function BottomNav() {
 
             {/* Items izquierda */}
             {leftItems.map(({ href, label, icon: Icon }) => {
-              const active = pathname === href;
+              const active = pathname.startsWith(href);
               return (
                 <Link
                   key={href}
@@ -75,7 +75,7 @@ export default function BottomNav() {
 
             {/* Items derecha */}
             {rightItems.map(({ href, label, icon: Icon }) => {
-              const active = pathname === href;
+              const active = pathname.startsWith(href);
               return (
                 <Link
                   key={href}

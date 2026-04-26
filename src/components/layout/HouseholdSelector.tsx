@@ -79,7 +79,7 @@ export default function HouseholdSelector() {
             <div className="mt-1.5 pt-1.5 border-t border-white/5">
               <button 
                 onClick={() => {
-                  window.location.href = '/hogar';
+                  window.location.href = '/settings/hogar';
                   setIsOpen(false);
                 }}
                 className="w-full flex items-center gap-2.5 px-3.5 py-2 text-[12px] text-gray-500 hover:text-gray-300 transition-colors"
