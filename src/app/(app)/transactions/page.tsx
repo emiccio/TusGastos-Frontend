@@ -84,7 +84,7 @@ export default function TransactionsPage() {
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-1.5 bg-gray-900 text-white text-[12.5px] font-medium px-3.5 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+          className="hidden md:flex items-center gap-1.5 bg-gray-900 text-white text-[12.5px] font-medium px-3.5 py-2 rounded-lg hover:bg-gray-800 transition-colors"
         >
           <Plus size={13} />
           Nueva

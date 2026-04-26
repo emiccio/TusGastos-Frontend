@@ -64,14 +64,6 @@ export default function DashboardPage() {
               Resumen del mes
             </h1>
           </div>
-          <button
-            id="btn-new-transaction-mobile"
-            onClick={() => setShowModal(true)}
-            aria-label="Registrar nueva transacción"
-            className="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center hover:bg-emerald-400 active:scale-95 transition-all"
-          >
-            <Plus size={18} strokeWidth={2.5} className="text-white" />
-          </button>
         </div>
 
         {/* Balance hero */}
