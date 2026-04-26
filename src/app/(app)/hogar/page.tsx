@@ -304,7 +304,7 @@ export default function HogarPage() {
                 ) : (
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5">
-                      <span className="flex-1 text-[12px] text-gray-500 truncate font-mono">
+                      <span className="flex-1 text-[12px] text-gray-500 truncate">
                         {invite.link}
                       </span>
                     </div>
