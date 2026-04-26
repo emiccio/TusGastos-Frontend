@@ -43,14 +43,15 @@ export default function CategoriesPage() {
       <div className="bg-white border-b border-gray-100 px-5 md:px-7 py-4 flex items-center justify-between">
         <div>
           <h1 className="text-[16px] md:text-[15px] font-semibold md:font-medium text-gray-900 tracking-tight md:tracking-normal">Categorías</h1>
-          <p className="text-[12px] text-gray-400 mt-0.5">En qué gastás tu plata</p>
+          <p className="text-[12px] text-gray-500 font-medium mt-0.5">En qué gastás tu plata</p>
         </div>
 
         {/* Month navigator (Desktop only inside topbar) */}
         <div className="hidden md:flex items-center gap-2">
           <button
             onClick={() => setMonthOffset((o) => o + 1)}
-            className="p-1.5 text-gray-400 hover:text-gray-700 border border-gray-200 rounded-lg transition-colors"
+            className="p-1.5 text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg transition-colors"
+            aria-label="Mes anterior"
           >
             <ChevronLeft size={13} />
           </button>
@@ -60,7 +61,8 @@ export default function CategoriesPage() {
           <button
             onClick={() => setMonthOffset((o) => Math.max(0, o - 1))}
             disabled={monthOffset === 0}
-            className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30 border border-gray-200 rounded-lg transition-colors"
+            className="p-1.5 text-gray-500 hover:text-gray-700 disabled:opacity-30 border border-gray-200 rounded-lg transition-colors"
+            aria-label="Mes siguiente"
           >
             <ChevronRight size={13} />
           </button>
@@ -72,7 +74,8 @@ export default function CategoriesPage() {
         <div className="flex items-center justify-between w-full max-w-[280px]">
           <button
             onClick={() => setMonthOffset((o) => o + 1)}
-            className="p-2 text-gray-400 hover:bg-gray-50 rounded-lg transition-colors focus:outline-none"
+            className="p-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors focus:outline-none"
+            aria-label="Mes anterior"
           >
             <ChevronLeft size={18} strokeWidth={2.5} />
           </button>
@@ -82,7 +85,8 @@ export default function CategoriesPage() {
           <button
             onClick={() => setMonthOffset((o) => Math.max(0, o - 1))}
             disabled={monthOffset === 0}
-            className="p-2 text-gray-400 disabled:opacity-20 hover:bg-gray-50 rounded-lg transition-colors focus:outline-none"
+            className="p-2 text-gray-500 disabled:opacity-20 hover:bg-gray-50 rounded-lg transition-colors focus:outline-none"
+            aria-label="Mes siguiente"
           >
             <ChevronRight size={18} strokeWidth={2.5} />
           </button>
@@ -93,7 +97,7 @@ export default function CategoriesPage() {
         {/* Summary KPI */}
         {!loading && data && (
           <div className="bg-white border border-gray-100 md:rounded-xl p-5 md:p-4 text-center md:text-left rounded-2xl shadow-sm md:shadow-none w-full">
-            <p className="text-[11.5px] md:text-[11px] uppercase tracking-wider md:tracking-wide text-gray-400 font-bold md:font-medium mb-1.5 md:mb-1">
+            <p className="text-[12px] uppercase tracking-wider md:tracking-wide text-gray-500 font-bold mb-1.5 md:mb-1">
               Total gastado en {monthLabel}
             </p>
             <p className="font-mono text-[34px] md:text-[22px] font-bold md:font-medium text-[#c04040] tracking-tight leading-none md:leading-normal">
@@ -154,7 +158,7 @@ export default function CategoriesPage() {
                     >
                       <div className="flex items-center gap-2.5">
                         <span
-                          className="text-[11px] font-medium text-gray-400 w-4 text-right"
+                          className="text-[12px] font-bold text-gray-500 w-4 text-right"
                         >
                           {i + 1}
                         </span>
@@ -163,7 +167,7 @@ export default function CategoriesPage() {
                           style={{ background: color }}
                         />
                         <span className="text-[12.5px] text-gray-700">{cat.category}</span>
-                        <span className="text-[10.5px] text-gray-400 bg-white px-1.5 py-0.5 rounded">
+                        <span className="text-[11px] text-gray-500 font-bold bg-white px-1.5 py-0.5 rounded">
                           {pct}%
                         </span>
                       </div>

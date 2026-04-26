@@ -38,13 +38,19 @@ export default function DonutChart({ data }: DonutChartProps) {
           ))}
         </Pie>
         <Tooltip
-          formatter={(value: number) => [formatMoney(value), '']}
-          labelFormatter={(label) => label}
+          formatter={(value: number, name: string) => [formatMoney(value), name]}
           contentStyle={{
-            fontSize: 12,
-            border: '0.5px solid #e5e7eb',
-            borderRadius: 8,
-            boxShadow: 'none',
+            fontSize: '12px',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(0, 0, 0, 0.05)',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.05)',
+            padding: '8px 12px',
+          }}
+          itemStyle={{
+            fontWeight: 'bold',
+            padding: '2px 0',
           }}
         />
       </PieChart>

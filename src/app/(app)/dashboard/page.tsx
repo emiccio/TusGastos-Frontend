@@ -6,21 +6,28 @@ import KpiCard from '@/components/ui/KpiCard';
 import CategoryRow from '@/components/ui/CategoryRow';
 import DonutChart from '@/components/charts/DonutChart';
 import NewTransactionModal from '@/components/ui/NewTransactionModal';
-import { getDashboard } from '@/lib/api';
-import { formatDateShort, formatMoney, percentageChange } from '@/lib/utils';
+import { getDashboard, getHousehold } from '@/lib/api';
+import { formatDateShort, formatMoney, percentageChange, getCategoryEmoji } from '@/lib/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import type { DashboardData } from '@/types';
+import type { DashboardData, HouseholdInfo } from '@/types';
 import { Plus, MessageCircle, TrendingUp, TrendingDown } from 'lucide-react';
+import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
+  const [household, setHousehold] = useState<HouseholdInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   async function load() {
     try {
-      const d = await getDashboard();
+      const [d, h] = await Promise.all([
+        getDashboard(),
+        getHousehold()
+      ]);
       setData(d);
+      setHousehold(h);
     } catch (err) {
       console.error(err);
     } finally {
@@ -52,7 +59,7 @@ export default function DashboardPage() {
         {/* Header row */}
         <div className="flex items-center justify-between mb-6 relative z-10">
           <div>
-            <p className="text-[11px] uppercase tracking-widest text-gray-500 font-semibold">TusGastos</p>
+            <p className="text-[12px] uppercase tracking-widest text-emerald-500/80 font-bold">TusGastos</p>
             <h1 className="text-[16px] font-semibold text-white tracking-tight mt-0.5">
               Resumen del mes
             </h1>
@@ -60,6 +67,7 @@ export default function DashboardPage() {
           <button
             id="btn-new-transaction-mobile"
             onClick={() => setShowModal(true)}
+            aria-label="Registrar nueva transacción"
             className="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center hover:bg-emerald-400 active:scale-95 transition-all"
           >
             <Plus size={18} strokeWidth={2.5} className="text-white" />
@@ -68,13 +76,13 @@ export default function DashboardPage() {
 
         {/* Balance hero */}
         <div className="relative z-10">
-          <p className="text-[11px] uppercase tracking-widest text-gray-500 font-semibold mb-1">
+          <p className="text-[12px] uppercase tracking-widest text-gray-400 font-bold mb-1.5">
             Balance disponible
           </p>
           {loading ? (
             <div className="h-10 w-40 bg-white/10 rounded-lg animate-pulse mb-4" />
           ) : (
-            <p className="font-mono text-[36px] font-semibold text-white tracking-tight leading-none mb-4">
+            <p className="text-[36px] font-semibold text-white tabular-nums tracking-tight leading-none mb-4">
               {formatMoney(data?.currentMonth.balance ?? 0)}
             </p>
           )}
@@ -82,45 +90,49 @@ export default function DashboardPage() {
           {/* Income / Expense chips */}
           <div className="grid grid-cols-2 gap-3">
             {/* Income chip */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-3">
-              <div className="flex items-center gap-1.5 mb-1.5">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="flex items-center gap-1.5 mb-1.5 relative z-10">
                 <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
                   <TrendingUp size={10} className="text-emerald-400" strokeWidth={2.5} />
                 </div>
-                <p className="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Ingresos</p>
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Ingresos</p>
               </div>
               {loading ? (
                 <div className="h-5 w-20 bg-white/10 rounded animate-pulse" />
               ) : (
-                <p className="font-mono text-[17px] font-semibold text-emerald-400 tracking-tight">
+                <p className="text-[18px] font-semibold text-emerald-400 tabular-nums tracking-tight relative z-10">
                   {formatMoney(data?.currentMonth.income ?? 0)}
                 </p>
               )}
               {!loading && (
-                <p className={`text-[10px] mt-0.5 font-medium ${incomeChange >= 0 ? 'text-emerald-600' : 'text-gray-500'}`}>
-                  {incomeChange >= 0 ? '↑' : '↓'} {Math.abs(incomeChange)}% vs anterior
+                <p className={`text-[10px] mt-1 font-bold relative z-10 flex items-center gap-1 ${incomeChange >= 0 ? 'text-emerald-500/80' : 'text-gray-500'}`}>
+                  {incomeChange >= 0 ? <TrendingUp size={8} /> : <TrendingDown size={8} />}
+                  {Math.abs(incomeChange)}% <span className="font-medium opacity-60">vs anterior</span>
                 </p>
               )}
             </div>
 
             {/* Expense chip */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-3">
-              <div className="flex items-center gap-1.5 mb-1.5">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="flex items-center gap-1.5 mb-1.5 relative z-10">
                 <div className="w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center">
                   <TrendingDown size={10} className="text-red-400" strokeWidth={2.5} />
                 </div>
-                <p className="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Gastos</p>
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Gastos</p>
               </div>
               {loading ? (
                 <div className="h-5 w-20 bg-white/10 rounded animate-pulse" />
               ) : (
-                <p className="font-mono text-[17px] font-semibold text-red-400 tracking-tight">
+                <p className="text-[18px] font-semibold text-red-400 tabular-nums tracking-tight relative z-10">
                   {formatMoney(data?.currentMonth.expenses ?? 0)}
                 </p>
               )}
               {!loading && (
-                <p className={`text-[10px] mt-0.5 font-medium ${expenseChange <= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
-                  {expenseChange >= 0 ? '↑' : '↓'} {Math.abs(expenseChange)}% vs anterior
+                <p className={`text-[10px] mt-1 font-bold relative z-10 flex items-center gap-1 ${expenseChange <= 0 ? 'text-emerald-500/80' : 'text-red-500/80'}`}>
+                  {expenseChange >= 0 ? <TrendingUp size={8} /> : <TrendingDown size={8} />}
+                  {Math.abs(expenseChange)}% <span className="font-medium opacity-60">vs anterior</span>
                 </p>
               )}
             </div>
@@ -151,7 +163,12 @@ export default function DashboardPage() {
       {/* ═══════════════════════════════════════════
           MAIN CONTENT
       ═══════════════════════════════════════════ */}
-      <div className="px-4 pt-4 pb-6 md:p-8 md:pt-8 space-y-4 md:space-y-6 md:max-w-6xl">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="px-4 pt-4 pb-6 md:p-8 md:pt-8 space-y-4 md:space-y-6 md:max-w-6xl"
+      >
 
         {/* ── KPI Cards — desktop only (mobile uses hero above) ── */}
         <div className="hidden md:block">
@@ -199,7 +216,7 @@ export default function DashboardPage() {
           {/* Donut chart — full on mobile, 5/9 on desktop */}
           <Card className="md:col-span-5">
             <CardHeader className="pb-2 px-5 pt-5">
-              <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest">
+              <p className="text-[12px] font-bold text-gray-600 uppercase tracking-widest">
                 Gastos por categoría
               </p>
             </CardHeader>
@@ -215,7 +232,7 @@ export default function DashboardPage() {
           {/* Top categories — full on mobile, 4/9 on desktop */}
           <Card className="md:col-span-4">
             <CardHeader className="pb-2 px-5 pt-5">
-              <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest">
+              <p className="text-[12px] font-bold text-gray-600 uppercase tracking-widest">
                 Top categorías
               </p>
             </CardHeader>
@@ -281,18 +298,32 @@ export default function DashboardPage() {
                             {formatDateShort(tx.date)}
                           </span>
                           <span className="text-[10px] text-gray-300">·</span>
-                          <span className="text-[11px] text-gray-400">{tx.category}</span>
+                          <span className="text-[11px] text-gray-400">
+                            {tx.category}
+                            {household && household.members.length > 1 && tx.user?.name && (
+                              <span className="inline-flex items-center ml-1 opacity-70">
+                                <span className="mx-1 text-[8px]">·</span>
+                                {tx.user.name.split(' ')[0]}
+                              </span>
+                            )}
+                          </span>
                         </div>
                       </div>
 
                       {/* Amount */}
-                      <span
-                        className={`font-mono text-[13px] md:text-[14px] font-semibold flex-shrink-0 ${
-                          tx.type === 'income' ? 'text-emerald-600' : 'text-red-500'
-                        }`}
-                      >
-                        {tx.type === 'income' ? '+' : '−'}{formatMoney(tx.amount)}
-                      </span>
+                      <div className="flex flex-col items-end gap-0.5">
+                        <span
+                          className={`text-[15px] font-semibold tabular-nums tracking-tight flex-shrink-0 ${tx.type === 'income' ? 'text-emerald-700' : 'text-[#c04040]'
+                            }`}
+                        >
+                          {tx.type === 'income' ? '+' : '−'} {formatMoney(tx.amount)}
+                        </span>
+                        {tx.paymentMethod && tx.type === 'expense' && (
+                          <span className="text-[10px] text-gray-500 uppercase tracking-widest font-bold opacity-60">
+                            {tx.paymentMethod === 'credit' ? '💳 Tarjeta' : '💵 Efectivo'}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -323,7 +354,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-      </div>
+      </motion.div>
 
       {showModal && (
         <NewTransactionModal
@@ -337,22 +368,25 @@ export default function DashboardPage() {
 
 function EmptyState() {
   return (
-    <div className="text-center py-10">
-      <p className="text-[14px] font-medium text-gray-500">Todavía no hay movimientos este mes</p>
-      <p className="text-[12px] text-gray-400 mt-1">
-        Escribile a Lulu por WhatsApp para empezar a registrar
+    <div className="text-center py-12 px-4">
+      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+        <MessageCircle size={24} className="text-gray-300" />
+      </div>
+      <p className="text-[15px] font-bold text-gray-900">Sin movimientos este mes</p>
+      <p className="text-[13px] text-gray-500 mt-1 max-w-[200px] mx-auto">
+        Registrá tu primer gasto o ingreso hablando con Lulu.
       </p>
+      <a
+        href={WHATSAPP_DEEP_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 mt-6 bg-emerald-500 text-white text-[13px] font-bold px-5 py-2.5 rounded-full hover:bg-emerald-400 transition-all active:scale-95 shadow-lg shadow-emerald-500/20"
+      >
+        <MessageCircle size={16} />
+        Hablar con Lulu
+      </a>
     </div>
   );
 }
 
-function getCategoryEmoji(category: string): string {
-  const map: Record<string, string> = {
-    Supermercado: '🛒', Restaurantes: '🍽️', Transporte: '🚌',
-    Nafta: '⛽', Servicios: '💡', Salud: '❤️', Farmacia: '💊',
-    Ropa: '👕', Entretenimiento: '🎬', Educación: '📚',
-    Viajes: '✈️', Hogar: '🏠', Sueldo: '💰', Freelance: '💻',
-    Transferencia: '💸', Otros: '📦',
-  };
-  return map[category] ?? '📦';
-}
+

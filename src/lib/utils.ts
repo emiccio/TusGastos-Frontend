@@ -37,17 +37,16 @@ export function percentageChange(current: number, previous: number): number {
 
 export const CATEGORY_COLORS: Record<string, string> = {
   Supermercado: '#e05c5c',
-  Restaurantes: '#e09a3e',
+  Comida: '#e09a3e',
+  Salidas: '#e07c3e',
   Transporte: '#5b8dd9',
-  Nafta: '#5b8dd9',
-  Servicios: '#7a5dbd',
+  Auto: '#5b8dd9',
+  Casa: '#a0836b',
   Salud: '#5dab7a',
   Farmacia: '#5dab7a',
   Ropa: '#d96ba8',
-  Entretenimiento: '#e07c3e',
   Educación: '#4ab8c4',
   Viajes: '#3ea8e0',
-  Hogar: '#a0836b',
   Sueldo: '#2d8a5e',
   Freelance: '#2d8a5e',
   Transferencia: '#3e8fd9',
@@ -55,3 +54,24 @@ export const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export const CATEGORIES = Object.keys(CATEGORY_COLORS);
+
+export function getCategoryEmoji(category: string): string {
+  const map: Record<string, string> = {
+    Supermercado: '🛒',
+    Comida: '🍕',
+    Salidas: '🍻',
+    Transporte: '🚍',
+    Auto: '🚗',
+    Casa: '🏠',
+    Salud: '❤️',
+    Farmacia: '💊',
+    Ropa: '👕',
+    Educación: '📚',
+    Viajes: '✈️',
+    Sueldo: '💲',
+    Freelance: '💻',
+    Transferencia: '💸',
+    Otros: '📦',
+  };
+  return map[category] ?? '📦';
+}

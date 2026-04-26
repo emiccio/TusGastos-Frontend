@@ -91,7 +91,7 @@ export default function HogarPage() {
                 <h1 className="text-[17px] font-semibold text-gray-900 tracking-tight">
                   {household?.name ?? 'Mi Hogar'}
                 </h1>
-                <p className="text-[12px] text-gray-400 mt-0.5">Tu hogar compartido</p>
+                <p className="text-[12px] text-gray-500 font-medium mt-0.5">Tu hogar compartido</p>
               </>
             )}
           </div>
@@ -138,7 +138,7 @@ export default function HogarPage() {
             </div>
           </>
         ) : !household ? (
-          <div className="text-center py-12 text-sm text-gray-400">
+          <div className="text-center py-12 text-sm text-gray-500 font-medium">
             {error || 'No se encontró el hogar'}
           </div>
         ) : (
@@ -150,7 +150,7 @@ export default function HogarPage() {
                   <Users size={14} className="text-gray-400" />
                   <span className="text-[13px] font-semibold text-gray-700">Miembros</span>
                 </div>
-                <span className="text-[11px] text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full">
+                <span className="text-[11px] text-gray-500 font-bold bg-gray-50 px-2.5 py-1 rounded-full">
                   {household.members.length} / {household.plan === 'FREE' ? (PLAN_LIMITS['FREE'] ?? 2) : '∞'}
                 </span>
               </div>
@@ -167,7 +167,7 @@ export default function HogarPage() {
                           {member.name || `+${member.phone}`}
                         </p>
                         {member.name && (
-                          <p className="text-[11px] text-gray-400">+{member.phone}</p>
+                          <p className="text-[11px] text-gray-500">+{member.phone}</p>
                         )}
                       </div>
                       {isAdmin && (
@@ -241,7 +241,7 @@ export default function HogarPage() {
                         WhatsApp
                       </button>
                     </div>
-                    <p className="text-[11px] text-gray-400 text-center">
+                    <p className="text-[11px] text-gray-500 text-center font-medium">
                       El link vence en 7 días · Solo puede usarse una vez
                     </p>
                   </div>

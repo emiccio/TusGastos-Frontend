@@ -81,6 +81,7 @@ export async function getTransactions(filters: TransactionFilters = {}): Promise
   if (filters.category) params.set('category', filters.category);
   if (filters.from) params.set('from', filters.from);
   if (filters.to) params.set('to', filters.to);
+  if (filters.userId) params.set('userId', filters.userId);
 
   return request(`/api/transactions?${params.toString()}`);
 }
