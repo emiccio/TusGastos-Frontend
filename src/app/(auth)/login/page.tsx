@@ -75,7 +75,8 @@ function LoginForm() {
             <button
               type="button"
               onClick={handleBack}
-              className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Volver a ingresar número"
+              className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 font-medium transition-colors"
             >
               <ArrowLeft className="w-3 h-3" />
               Cambiar número
@@ -93,8 +94,8 @@ function LoginForm() {
             autoComplete="one-time-code"
             autoFocus
           />
-          <p className="text-xs text-gray-400">
-            Lulú te mandó un código de 6 dígitos al <span className="font-medium text-gray-500">{phone}</span>
+          <p className="text-xs text-gray-500 font-medium">
+            Lulú te mandó un código de 6 dígitos al <span className="font-bold text-gray-600">+{phone}</span>
           </p>
         </div>
 
@@ -124,7 +125,7 @@ function LoginForm() {
         <button
           type="button"
           onClick={handleRequestOtp as any}
-          className="w-full text-xs text-gray-400 hover:text-gray-600 transition-colors text-center"
+          className="w-full text-xs text-gray-500 hover:text-gray-700 font-medium transition-colors text-center"
           disabled={loading}
         >
           ¿No llegó el código? Reenviar
@@ -146,7 +147,7 @@ function LoginForm() {
           autoComplete="tel"
           autoFocus
         />
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-500 font-medium">
           Código de país + número (sin + ni espacios)
         </p>
       </div>
@@ -270,7 +271,7 @@ export default function LoginPage() {
             </div>
             <div className="text-center">
               <h1 className="text-xl font-semibold text-gray-900 tracking-tight">TusGastos</h1>
-              <p className="text-sm text-gray-500">Tu asistente financiero personal</p>
+              <p className="text-sm text-gray-600 font-medium">Tu asistente financiero personal</p>
             </div>
           </div>
 
@@ -292,13 +293,13 @@ export default function LoginPage() {
             </CardContent>
           </Card>
 
-          <p className="text-center text-xs text-gray-400">
+          <p className="text-center text-xs text-gray-500 font-medium">
             ¿No tenés cuenta?{' '}
             <a
               href={WHATSAPP_DEEP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 font-medium hover:text-emerald-600 transition-colors"
+              className="text-gray-700 font-bold hover:text-emerald-600 transition-colors"
             >
               Escribile a Lulú por WhatsApp
             </a>

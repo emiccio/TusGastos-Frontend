@@ -5,10 +5,11 @@ import AppLayout from '@/components/layout/AppLayout';
 import TransactionBadge from '@/components/ui/TransactionBadge';
 import NewTransactionModal from '@/components/ui/NewTransactionModal';
 import TransactionList from '@/components/ui/TransactionList';
-import { getTransactions, deleteTransaction } from '@/lib/api';
-import { formatDate, formatMoney, CATEGORIES } from '@/lib/utils';
-import type { Transaction, TransactionFilters } from '@/types';
+import { getTransactions, deleteTransaction, getHousehold } from '@/lib/api';
+import { formatDate, formatMoney, CATEGORIES, getCategoryEmoji } from '@/lib/utils';
+import type { Transaction, TransactionFilters, HouseholdMember } from '@/types';
 import { Plus, Trash2, ChevronLeft, ChevronRight, CreditCard } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const TYPE_FILTERS = [
   { value: '', label: 'Todos' },
@@ -23,6 +24,7 @@ export default function TransactionsPage() {
   const [showModal, setShowModal] = useState(false);
   const [filters, setFilters] = useState<TransactionFilters>({ page: 1, limit: 20 });
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [members, setMembers] = useState<HouseholdMember[]>([]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -38,6 +40,18 @@ export default function TransactionsPage() {
   }, [filters]);
 
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    async function fetchMembers() {
+      try {
+        const res = await getHousehold();
+        setMembers(res.members);
+      } catch (err) {
+        console.error('Error fetching members:', err);
+      }
+    }
+    fetchMembers();
+  }, []);
 
   function setFilter(key: keyof TransactionFilters, value: any) {
     setFilters((prev) => ({ ...prev, [key]: value || undefined, page: 1 }));
@@ -56,16 +70,7 @@ export default function TransactionsPage() {
     }
   }
 
-  function getCategoryEmoji(category: string): string {
-    const map: Record<string, string> = {
-      Supermercado: '🛒', Restaurantes: '🍽️', Transporte: '🚌',
-      Nafta: '⛽', Servicios: '💡', Salud: '❤️', Farmacia: '💊',
-      Ropa: '👕', Entretenimiento: '🎬', Educación: '📚',
-      Viajes: '✈️', Hogar: '🏠', Sueldo: '💰', Freelance: '💻',
-      Transferencia: '💸', Otros: '📦',
-    };
-    return map[category] ?? '📦';
-  }
+
 
   return (
     <AppLayout>
@@ -86,7 +91,12 @@ export default function TransactionsPage() {
         </button>
       </div>
 
-      <div className="p-7 space-y-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="p-7 space-y-4"
+      >
         {/* Filters */}
         <div className="bg-white border border-gray-100 rounded-xl p-4 flex flex-wrap gap-3 items-end">
           {/* Tipo */}
@@ -125,6 +135,25 @@ export default function TransactionsPage() {
               ))}
             </select>
           </div>
+
+          {/* Miembro */}
+          {members.length > 1 && (
+            <div>
+              <label className="text-[10.5px] uppercase tracking-wide text-gray-400 font-medium mb-1 block">
+                Miembro
+              </label>
+              <select
+                value={filters.userId ?? ''}
+                onChange={(e) => setFilter('userId', e.target.value)}
+                className="px-3 py-1.5 text-[12px] border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+              >
+                <option value="">Todos</option>
+                {members.map((m) => (
+                  <option key={m.id} value={m.id}>{m.name || 'Sin nombre'}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           {/* Desde */}
           <div>
@@ -192,7 +221,7 @@ export default function TransactionsPage() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-100">
-                    <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-5 py-3">
+                    <th className="text-left text-[11px] uppercase tracking-wide text-gray-500 font-bold px-5 py-3">
                       Fecha
                     </th>
                     <th className="text-left text-[10.5px] uppercase tracking-wide text-gray-400 font-medium px-3 py-3">
@@ -219,11 +248,18 @@ export default function TransactionsPage() {
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2">
                           <span className="text-sm">{getCategoryEmoji(tx.category)}</span>
-                          <span className="text-[12.5px] text-gray-800">
-                            {tx.description || tx.category}
-                          </span>
+                          <div className="flex flex-col">
+                            <span className="text-[12.5px] text-gray-800 font-medium truncate max-w-[150px] md:max-w-xs">
+                              {tx.description || tx.category}
+                            </span>
+                            {members.length > 1 && tx.user?.name && (
+                              <span className="text-[10px] text-gray-400 mt-0.5">
+                                por {tx.user.name.split(' ')[0]}
+                              </span>
+                            )}
+                          </div>
                           {tx.paymentMethod === 'credit' && (
-                            <CreditCard size={13} className="text-gray-400 ml-1" />
+                            <CreditCard size={13} className="text-gray-400 ml-1 flex-shrink-0" />
                           )}
                         </div>
                       </td>
@@ -231,13 +267,13 @@ export default function TransactionsPage() {
                       <td className="px-3 py-3">
                         <TransactionBadge type={tx.type} />
                       </td>
-                      <td className="px-5 py-3 text-right">
+                      <td className="px-5 py-4 text-right">
                         <span
-                          className={`font-mono text-[13px] font-medium ${
-                            tx.type === 'income' ? 'text-[#2d8a5e]' : 'text-[#c04040]'
+                          className={`text-[14.5px] font-semibold tabular-nums ${
+                            tx.type === 'income' ? 'text-emerald-700' : 'text-[#c04040]'
                           }`}
                         >
-                          {tx.type === 'income' ? '+' : '−'}{formatMoney(tx.amount)}
+                          {tx.type === 'income' ? '+' : '−'} {formatMoney(tx.amount)}
                         </span>
                       </td>
                       <td className="px-3 py-3">
@@ -281,7 +317,7 @@ export default function TransactionsPage() {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {showModal && (
         <NewTransactionModal

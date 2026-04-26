@@ -42,6 +42,9 @@ export interface Transaction {
   paymentMethod?: string;
   date: string;
   rawMessage?: string;
+  user?: {
+    name: string;
+  };
   createdAt: string;
 }
 
@@ -90,6 +93,7 @@ export interface TransactionFilters {
   category?: string;
   from?: string;
   to?: string;
+  userId?: string;
 }
 
 export interface Category {

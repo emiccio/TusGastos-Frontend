@@ -18,8 +18,8 @@ export default function CategoryRow({ category, total, maxTotal }: CategoryRowPr
           {category}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10.5px] text-gray-400">{pct}%</span>
-          <span className="font-mono text-[12.5px] text-gray-900 font-semibold">{formatMoney(total)}</span>
+          <span className="text-[11px] text-gray-500 font-medium">{pct}%</span>
+          <span className="text-[12.5px] text-gray-900 font-semibold tabular-nums">{formatMoney(total)}</span>
         </div>
       </div>
       <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
