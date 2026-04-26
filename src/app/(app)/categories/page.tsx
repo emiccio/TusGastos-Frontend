@@ -100,7 +100,7 @@ export default function CategoriesPage() {
             <p className="text-[12px] uppercase tracking-wider md:tracking-wide text-gray-500 font-bold mb-1.5 md:mb-1">
               Total gastado en {monthLabel}
             </p>
-            <p className="font-mono text-[34px] md:text-[22px] font-bold md:font-medium text-[#c04040] tracking-tight leading-none md:leading-normal">
+            <p className="text-[34px] md:text-[22px] font-bold md:font-medium text-[#c04040] tabular-nums tracking-tight leading-none md:leading-normal">
               {formatMoney(data.totalExpenses)}
             </p>
           </div>
@@ -171,7 +171,7 @@ export default function CategoriesPage() {
                           {pct}%
                         </span>
                       </div>
-                      <span className="font-mono text-[12.5px] font-medium text-[#c04040]">
+                      <span className="text-[12.5px] font-medium text-[#c04040] tabular-nums tracking-tight">
                         {formatMoney(cat.total)}
                       </span>
                     </div>
