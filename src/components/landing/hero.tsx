@@ -65,7 +65,7 @@ export default function Hero() {
               </div>
 
               {/* Área de Mensajes */}
-              <div className="p-4 space-y-4 min-h-[300px] bg-opacity-20 bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat relative">
+              <div className="p-4 space-y-4 min-h-[300px] bg-opacity-20 bg-[url('/fondoWA.png')] bg-repeat relative">
                 <div className="bg-white p-3 rounded-lg rounded-tl-none self-start max-w-[85%] shadow-sm relative">
                   <p className="text-[11px] text-slate-text leading-relaxed">¡Hola! Mandame cualquier gasto que hayas hecho hoy, ya sea por texto o audio. 🎙️</p>
                   <span className="absolute right-2 bottom-1 text-[8px] text-slate-400">10:45</span>
