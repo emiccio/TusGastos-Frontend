@@ -31,9 +31,11 @@ export default function Hero() {
               </a>
             </Button>
             <div className="flex items-center gap-3 px-2">
-              <div className="flex -space-x-2">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-[#09090b] bg-zinc-800" />
+              <div className="flex -space-x-3">
+                {['matias.jpg', 'micaela.jpg', 'Elias.jpg'].map((img, i) => (
+                  <div key={i} className="w-9 h-9 rounded-full border-2 border-[#09090b] overflow-hidden bg-zinc-800">
+                    <img src={`/users/${img}`} alt="Usuario" className="w-full h-full object-cover" />
+                  </div>
                 ))}
               </div>
               <span className="text-sm text-zinc-500 font-medium">+1.000 usuarios ya controlan sus gastos</span>

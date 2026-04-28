@@ -20,7 +20,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="py-24 bg-white" id="como-funciona">
+    <section className="py-24 bg-white" id="how-it-works">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-text mb-4">
@@ -43,7 +43,7 @@ export default function HowItWorks() {
               <p className="text-slate-muted leading-relaxed">
                 {step.description}
               </p>
-              
+
               {i < steps.length - 1 && (
                 <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-full h-px bg-brand-light -z-10" />
               )}
