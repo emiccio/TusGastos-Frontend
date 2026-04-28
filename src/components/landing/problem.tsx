@@ -1,47 +1,67 @@
-import { Calculator, Smartphone, Brain } from 'lucide-react';
+import { XCircle, CheckCircle2 } from 'lucide-react';
 
 export default function Problem() {
+  const painPoints = [
+    "No sé cuánto gasté en el mes",
+    "Anotar en una planilla es un embole",
+    "Las apps de bancos son lentas",
+    "Me olvido de los gastos en efectivo"
+  ];
+
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight mb-4">
-            ¿Por qué siempre dejamos de anotar nuestros gastos?
+    <section className="py-24 bg-white" id="problema">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-text mb-4">
+            ¿A dónde se fue la plata?
           </h2>
-          <p className="text-lg text-gray-500">
-            Llevar el control de finanzas no debería sentirse como un segundo trabajo.
+          <p className="text-lg text-slate-muted max-w-2xl mx-auto leading-relaxed">
+            Llegar a fin de mes no debería ser una adivinanza. El problema no es gastar, es no tener el control.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-14 h-14 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-6">
-              <Calculator className="w-7 h-7" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-900">Apps complicadas</h3>
-            <p className="text-gray-500 leading-relaxed">
-              Las aplicaciones financieras te piden demasiada información. Seleccionar categoría, fecha, cuenta... terminás abandonando por pereza.
-            </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-white p-8 rounded-card border border-data-red/10 shadow-sm">
+            <h3 className="text-xl font-heading font-bold text-data-red mb-6 flex items-center gap-2">
+              <XCircle className="w-5 h-5" />
+              El método tradicional
+            </h3>
+            <ul className="space-y-4">
+              {painPoints.map((point, i) => (
+                <li key={i} className="flex items-start gap-3 text-slate-muted">
+                  <span className="w-1.5 h-1.5 rounded-full bg-data-red mt-2 shrink-0" />
+                  {point}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center mb-6">
-              <Smartphone className="w-7 h-7" />
+          <div className="bg-brand-light p-8 rounded-card border border-brand/20 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <CheckCircle2 className="w-24 h-24 text-brand" />
             </div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-900">Demasiada fricción</h3>
-            <p className="text-gray-500 leading-relaxed">
-              Tener que abrir una aplicación específica cada vez que comprás un café no es natural en tu rutina diaria.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-            <div className="w-14 h-14 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-6">
-              <Brain className="w-7 h-7" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-900">Estrés cognitivo</h3>
-            <p className="text-gray-500 leading-relaxed">
-              Terminás juntando tickets en tu billetera y tratando de recordar en qué gastaste el fin de semana pasado.
-            </p>
+            <h3 className="text-xl font-heading font-bold text-brand-dark mb-6 flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5" />
+              El efecto Lulú
+            </h3>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 text-slate-text font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand mt-2 shrink-0" />
+                Anotás en 3 segundos desde WhatsApp
+              </li>
+              <li className="flex items-start gap-3 text-slate-text font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand mt-2 shrink-0" />
+                La IA categoriza todo automáticamente
+              </li>
+              <li className="flex items-start gap-3 text-slate-text font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand mt-2 shrink-0" />
+                Sabés cuánto te queda en tiempo real
+              </li>
+              <li className="flex items-start gap-3 text-slate-text font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand mt-2 shrink-0" />
+                Tomás mejores decisiones financieras
+              </li>
+            </ul>
           </div>
         </div>
       </div>
