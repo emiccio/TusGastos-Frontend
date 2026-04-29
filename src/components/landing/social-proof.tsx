@@ -1,40 +1,55 @@
+import { Star } from 'lucide-react';
+
 export default function SocialProof() {
+  const testimonials = [
+    {
+      text: "Increíblemente fácil de usar. Por fin logro registrar cada gasto porque es solo mandar un audio.",
+      author: "Matias V.",
+      role: "Freelance",
+      image: "/users/matias.jpg"
+    },
+    {
+      text: "Antes usaba Excel y siempre me colgaba. Con Lulu lo hago al instante cuando pago.",
+      author: "Micaela.",
+      role: "Usuario Pro",
+      image: "/users/micaela.jpg"
+    },
+    {
+      text: "Lo usamos con mi pareja para el hogar y es increíble. No más '¿quién pagó la luz?'.",
+      author: "Elias M.",
+      role: "Emprendedor",
+      image: "/users/Elias.jpg"
+    }
+  ];
+
   return (
-    <section className="py-20 bg-white border-b border-gray-100">
-      <div className="max-w-6xl mx-auto px-6">
-        <p className="text-center text-sm font-semibold text-gray-400 uppercase tracking-widest mb-10">
-          La forma más fácil de llevar tus cuentas
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-100">
-          <div className="pt-8 md:pt-0">
-            <div className="text-4xl font-semibold text-gray-900 tracking-tight mb-2">+10,000</div>
-            <div className="text-gray-500">Mensajes procesados</div>
-          </div>
-          <div className="pt-8 md:pt-0">
-            <div className="text-4xl font-semibold text-emerald-600 tracking-tight mb-2">35%</div>
-            <div className="text-gray-500">Ahorro promedio mensual</div>
-          </div>
-          <div className="pt-8 md:pt-0">
-            <div className="text-4xl font-semibold text-gray-900 tracking-tight mb-2">98%</div>
-            <div className="text-gray-500">Usuarios activos diarios</div>
+    <section className="py-24 bg-[#fafafa]" id="testimonios">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-text mb-4">
+            Lo que dicen nuestros usuarios
+          </h2>
+          <div className="flex justify-center gap-1 mb-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Star key={i} className="w-5 h-5 fill-data-amber text-data-amber" />
+            ))}
           </div>
         </div>
 
-        <div className="mt-20 grid md:grid-cols-3 gap-6">
-          {[
-            { quote: "Increíblemente fácil de usar. Por fin logro registrar cada gasto porque es solo mandar un audio.", name: "Delfina", role: "Freelancer" },
-            { quote: "Antes usaba Excel y siempre me colgaba. Con Lulu lo hago al instante cuando pago.", name: "Tomás", role: "Diseñador" },
-            { quote: "La categorización automática funciona perfecto. El resumen a fin de mes es oro puro.", name: "Sofia", role: "Emprendedora" }
-          ].map((t, i) => (
-            <div key={i} className="bg-gray-50 rounded-2xl p-6">
-              <div className="flex gap-1 mb-4 text-emerald-500">
-                {Array(5).fill('★').map((s, j) => <span key={j}>{s}</span>)}
-              </div>
-              <p className="text-gray-700 italic mb-6">"{t.quote}"</p>
-              <div>
-                <p className="font-semibold text-gray-900">{t.name}</p>
-                <p className="text-sm text-gray-500">{t.role}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((t, i) => (
+            <div key={i} className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all flex flex-col h-full group hover:-translate-y-1">
+              <p className="text-slate-text italic mb-8 leading-relaxed flex-grow text-lg">
+                "{t.text}"
+              </p>
+              <div className="flex items-center gap-4 mt-auto pt-6 border-t border-gray-50">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-brand-light border border-brand/10">
+                  <img src={t.image} alt={t.author} className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <p className="font-bold text-slate-text">{t.author}</p>
+                  <p className="text-sm text-slate-muted">{t.role}</p>
+                </div>
               </div>
             </div>
           ))}

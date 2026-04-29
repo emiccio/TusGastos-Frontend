@@ -116,7 +116,7 @@ export default function JoinPage() {
             <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center">
               <Home size={15} className="text-white" />
             </div>
-            <span className="text-lg font-semibold text-white tracking-tight">TusGastos</span>
+            <span className="text-lg font-semibold text-white tracking-tight">GestionAndo</span>
           </div>
         </div>
 

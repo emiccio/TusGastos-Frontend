@@ -59,7 +59,7 @@ export default function DashboardPage() {
         {/* Header row */}
         <div className="flex items-center justify-between mb-6 relative z-10">
           <div>
-            <p className="text-[12px] uppercase tracking-widest text-emerald-500/80 font-bold">TusGastos</p>
+            <p className="text-[12px] uppercase tracking-widest text-emerald-500/80 font-bold">GestionAndo</p>
             <h1 className="text-[16px] font-semibold text-white tracking-tight mt-0.5">
               Resumen del mes
             </h1>

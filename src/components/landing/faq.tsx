@@ -1,3 +1,5 @@
+import { HelpCircle } from 'lucide-react';
+
 export default function Faq() {
   const faqs = [
     {
@@ -27,29 +29,28 @@ export default function Faq() {
   ];
 
   return (
-    <section id="faq" className="py-24 bg-white">
-      <div className="max-w-3xl mx-auto px-6">
+    <section className="py-24 bg-[#F9FAFB] border-y border-zinc-100" id="faq">
+      <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-text mb-4">
             Preguntas frecuentes
           </h2>
+          <p className="text-lg text-slate-muted">
+            Todo lo que necesitás saber sobre Lulú.
+          </p>
         </div>
 
-        <div className="divide-y divide-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {faqs.map((faq, i) => (
-            <details key={i} className="group py-6 cursor-pointer overflow-hidden">
-              <summary className="text-lg font-medium text-gray-900 flex justify-between items-center outline-none list-none [&::-webkit-details-marker]:hidden">
+            <div key={i} className="bg-white p-6 rounded-card border border-brand-light/20 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-heading font-bold text-slate-text mb-3 flex items-start gap-3">
+                <HelpCircle className="w-5 h-5 text-brand shrink-0 mt-1" />
                 {faq.q}
-                <span className="ml-6 flex-shrink-0 text-emerald-500 group-open:-rotate-180 transition-transform duration-200">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-500 leading-relaxed max-w-2xl hidden group-open:block animate-in slide-in-from-top-2 fade-in duration-200">
+              </h3>
+              <p className="text-sm text-slate-muted leading-relaxed">
                 {faq.a}
               </p>
-            </details>
+            </div>
           ))}
         </div>
       </div>

@@ -43,7 +43,7 @@ export default function Sidebar() {
           <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0">
             <TrendingUp size={13} className="text-white" strokeWidth={2.5} />
           </div>
-          <p className="text-[16px] font-semibold text-white tracking-tight">TusGastos</p>
+          <p className="text-[16px] font-semibold text-white tracking-tight">GestionAndo</p>
         </div>
       </div>
 
