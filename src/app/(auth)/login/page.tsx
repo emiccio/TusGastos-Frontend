@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Loader2, MessageCircle, TrendingUp, ShieldCheck, Zap, ArrowLeft } from 'lucide-react';
 import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
+import Link from 'next/link';
 
 type Step = 'phone' | 'otp';
 
@@ -71,12 +72,12 @@ function LoginForm() {
       <form onSubmit={handleLogin} className="space-y-5">
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <Label htmlFor="otp-input">Código de verificación</Label>
+            <Label htmlFor="otp-input" className="text-zinc-400 lg:text-zinc-700">Código de verificación</Label>
             <button
               type="button"
               onClick={handleBack}
               aria-label="Volver a ingresar número"
-              className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 font-medium transition-colors"
+              className="flex items-center gap-1 text-xs text-zinc-500 lg:text-gray-400 hover:text-white lg:hover:text-zinc-900 font-medium transition-colors"
             >
               <ArrowLeft className="w-3 h-3" />
               Cambiar número
@@ -93,14 +94,15 @@ function LoginForm() {
             placeholder="123456"
             autoComplete="one-time-code"
             autoFocus
+            className="bg-white/5 lg:bg-white border-white/10 lg:border-zinc-200 text-white lg:text-zinc-900 placeholder:text-zinc-600 h-12"
           />
-          <p className="text-xs text-gray-500 font-medium">
-            Lulú te mandó un código de 6 dígitos al <span className="font-bold text-gray-600">+{phone}</span>
+          <p className="text-xs text-zinc-500 lg:text-gray-400 font-medium">
+            Lulú te mandó un código de 6 dígitos al <span className="font-bold text-zinc-300 lg:text-zinc-600">+{phone}</span>
           </p>
         </div>
 
         {error && (
-          <div className="flex items-start gap-2 bg-red-50 border border-red-100 text-red-700 text-sm px-3 py-2.5 rounded-lg">
+          <div className="flex items-start gap-2 bg-red-500/10 lg:bg-red-50 border border-red-500/20 lg:border-red-100 text-red-400 lg:text-red-600 text-sm px-3 py-2.5 rounded-lg">
             <span className="mt-0.5 shrink-0">⚠</span>
             <span>{error}</span>
           </div>
@@ -108,7 +110,7 @@ function LoginForm() {
 
         <Button
           type="submit"
-          className="w-full"
+          className="w-full bg-brand-dark hover:bg-brand text-white rounded-lg h-12 font-bold shadow-lg shadow-brand/10 transition-all active:scale-[0.98]"
           size="lg"
           disabled={loading || code.length !== 6}
         >
@@ -125,7 +127,7 @@ function LoginForm() {
         <button
           type="button"
           onClick={handleRequestOtp as any}
-          className="w-full text-xs text-gray-500 hover:text-gray-700 font-medium transition-colors text-center"
+          className="w-full text-xs text-zinc-500 lg:text-gray-400 hover:text-white lg:hover:text-zinc-900 font-medium transition-colors text-center"
           disabled={loading}
         >
           ¿No llegó el código? Reenviar
@@ -137,7 +139,7 @@ function LoginForm() {
   return (
     <form onSubmit={handleRequestOtp} className="space-y-5">
       <div className="space-y-1.5">
-        <Label htmlFor="phone-input">Número de WhatsApp</Label>
+        <Label htmlFor="phone-input" className="text-zinc-400 lg:text-zinc-700">Número de WhatsApp</Label>
         <Input
           id="phone-input"
           type="tel"
@@ -146,14 +148,15 @@ function LoginForm() {
           placeholder="ej: 5491112345678"
           autoComplete="tel"
           autoFocus
+          className="bg-white/5 lg:bg-white border-white/10 lg:border-zinc-200 text-white lg:text-zinc-900 placeholder:text-zinc-600 h-12"
         />
-        <p className="text-xs text-gray-500 font-medium">
+        <p className="text-xs text-zinc-500 lg:text-gray-400 font-medium">
           Código de país + número (sin + ni espacios)
         </p>
       </div>
 
       {error && (
-        <div className="flex items-start gap-2 bg-red-50 border border-red-100 text-red-700 text-sm px-3 py-2.5 rounded-lg">
+        <div className="flex items-start gap-2 bg-red-500/10 lg:bg-red-50 border border-red-500/20 lg:border-red-100 text-red-400 lg:text-red-600 text-sm px-3 py-2.5 rounded-lg">
           <span className="mt-0.5 shrink-0">⚠</span>
           <div className="space-y-1.5">
             <span>{error}</span>
@@ -162,7 +165,7 @@ function LoginForm() {
                 href={WHATSAPP_DEEP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-emerald-700 font-medium hover:underline"
+                className="flex items-center gap-1.5 text-brand font-medium hover:underline"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 Registrarme con Lulú
@@ -173,7 +176,7 @@ function LoginForm() {
                 href={WHATSAPP_DEEP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-emerald-700 font-medium hover:underline"
+                className="flex items-center gap-1.5 text-brand font-medium hover:underline"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
                 Terminar registro con Lulú
@@ -185,7 +188,7 @@ function LoginForm() {
 
       <Button
         type="submit"
-        className="w-full"
+        className="w-full bg-brand-dark hover:bg-brand text-white rounded-lg h-12 font-bold shadow-lg shadow-brand/10 transition-all active:scale-[0.98]"
         size="lg"
         disabled={loading || !phone.trim()}
       >
@@ -206,27 +209,26 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* ── Left decorative panel (hidden on mobile) ── */}
-      <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 bg-gray-950 overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -right-20 w-80 h-80 rounded-full bg-emerald-400/10 blur-3xl pointer-events-none" />
+      <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 bg-[#09090b] overflow-hidden border-r border-white/5">
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand/10 blur-[120px] pointer-events-none" />
+        <div className="absolute -bottom-32 -right-20 w-80 h-80 rounded-full bg-brand/10 blur-[120px] pointer-events-none" />
 
         <div className="relative z-10">
           <div className="flex items-center gap-2.5 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-white" strokeWidth={2.5} />
-            </div>
-            <span className="text-white font-semibold text-lg tracking-tight">TusGastos</span>
+            <Link href="/" className="font-heading text-2xl font-bold text-white tracking-tight">
+              Gestion<span className="text-brand">Ando</span>
+            </Link>
           </div>
-          <p className="text-gray-400 text-sm">Tu asistente financiero personal</p>
+          <p className="text-zinc-400 text-sm font-medium">Tu asistente financiero personal</p>
         </div>
 
         <div className="relative z-10 space-y-6">
           <div className="space-y-3">
-            <h2 className="text-4xl font-semibold text-white leading-tight tracking-tight">
+            <h2 className="text-4xl font-heading font-bold text-white leading-tight tracking-tight">
               Controlá tus finanzas<br />
-              <span className="text-emerald-400">sin esfuerzo.</span>
+              <span className="text-brand">sin esfuerzo.</span>
             </h2>
-            <p className="text-gray-400 text-base leading-relaxed max-w-xs">
+            <p className="text-zinc-400 text-base leading-relaxed max-w-xs font-medium">
               Registrá gastos por WhatsApp, visualizá tu historial y tomá mejores decisiones financieras.
             </p>
           </div>
@@ -238,12 +240,12 @@ export default function LoginPage() {
               { icon: ShieldCheck, label: 'Tus datos, seguros', sub: 'Solo vos tenés acceso' },
             ].map(({ icon: Icon, label, sub }) => (
               <div key={label} className="flex items-center gap-3 group">
-                <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/10 group-hover:border-emerald-500/20 transition-colors duration-200">
-                  <Icon className="w-3.5 h-3.5 text-emerald-400" />
+                <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand/10 group-hover:border-brand/20 transition-colors duration-200">
+                  <Icon className="w-3.5 h-3.5 text-brand" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-white leading-none">{label}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{sub}</p>
+                  <p className="text-sm font-bold text-white leading-none">{label}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5 font-medium">{sub}</p>
                 </div>
               </div>
             ))}
@@ -253,32 +255,34 @@ export default function LoginPage() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3.5 py-1.5">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-brand" />
             </span>
-            <span className="text-xs text-gray-300 font-medium">Lulú activa en WhatsApp</span>
+            <span className="text-xs text-zinc-300 font-bold">Lulú activa en WhatsApp</span>
           </div>
         </div>
       </div>
 
       {/* ── Right form panel ── */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-gray-50 min-h-screen">
-        <div className="w-full max-w-sm space-y-6">
+      <div className="flex-1 flex items-center justify-center p-6 bg-[#09090b] lg:bg-gray-50 min-h-screen relative overflow-hidden">
+        {/* Background Glow - only mobile */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand/5 rounded-full blur-[100px] pointer-events-none lg:hidden" />
+
+        <div className="w-full max-w-sm space-y-8 relative z-10">
 
           <div className="flex flex-col items-center gap-3 lg:hidden">
-            <div className="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-emerald-400" strokeWidth={2.5} />
-            </div>
             <div className="text-center">
-              <h1 className="text-xl font-semibold text-gray-900 tracking-tight">TusGastos</h1>
-              <p className="text-sm text-gray-600 font-medium">Tu asistente financiero personal</p>
+              <h1 className="text-2xl font-heading font-bold text-white tracking-tight">
+                Gestion<span className="text-brand">Ando</span>
+              </h1>
+              <p className="text-sm text-zinc-400 font-medium mt-1">Tu asistente financiero personal</p>
             </div>
           </div>
 
-          <Card className="shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle>Ingresar al dashboard</CardTitle>
-              <CardDescription>
+          <Card className="bg-white/5 lg:bg-white backdrop-blur-xl lg:backdrop-blur-none border-white/10 lg:border-zinc-200 shadow-2xl lg:shadow-card rounded-2xl overflow-hidden">
+            <CardHeader className="pb-6 pt-8 text-center">
+              <CardTitle className="text-2xl font-heading font-bold text-white lg:text-zinc-900">Ingresar al dashboard</CardTitle>
+              <CardDescription className="text-zinc-400 lg:text-zinc-500 font-medium mt-2">
                 Usá el mismo número con el que le escribís a Lulú
               </CardDescription>
             </CardHeader>
@@ -293,13 +297,13 @@ export default function LoginPage() {
             </CardContent>
           </Card>
 
-          <p className="text-center text-xs text-gray-500 font-medium">
+          <p className="text-center text-xs text-zinc-500 lg:text-gray-400 font-medium">
             ¿No tenés cuenta?{' '}
             <a
               href={WHATSAPP_DEEP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 font-bold hover:text-emerald-600 transition-colors"
+              className="text-white lg:text-zinc-900 font-bold hover:text-brand transition-colors underline lg:no-underline"
             >
               Escribile a Lulú por WhatsApp
             </a>

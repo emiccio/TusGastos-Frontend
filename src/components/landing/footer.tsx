@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="font-heading text-2xl font-bold text-slate-text mb-4 inline-block">
-              Tus<span className="text-brand">Gastos</span>
+              Gestion<span className="text-brand">Ando</span>
             </Link>
             <p className="text-slate-muted max-w-xs leading-relaxed">
               Tu asistente financiero personal vía WhatsApp. Controlá tus gastos, analizá tus finanzas y ahorrá más cada mes.
@@ -34,7 +34,7 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-brand-light/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-muted">
-          <p>© {new Date().getFullYear()} TusGastos. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} GestionAndo. Todos los derechos reservados.</p>
           <div className="flex gap-4">
             <a href="#" className="p-2 bg-surface-base rounded-full border border-brand-light/20 hover:text-brand hover:border-brand transition-all">
               <Twitter className="w-4 h-4" />

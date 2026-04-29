@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import AppLayout from '@/components/layout/AppLayout';
-import { 
-  Home, 
-  Settings as SettingsIcon, 
-  ListTree, 
-  LogOut, 
+import {
+  Home,
+  Settings as SettingsIcon,
+  ListTree,
+  LogOut,
   ChevronRight,
   User,
   ShieldCheck,
@@ -65,7 +65,7 @@ export default function SettingsPage() {
         </div>
 
         <div className="max-w-2xl mx-auto p-4 md:p-8 space-y-8 pb-24">
-          
+
           {/* User Profile Card */}
           <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center text-white text-lg font-bold">
@@ -122,9 +122,9 @@ export default function SettingsPage() {
 
           {/* Action Section */}
           <div className="space-y-3 pt-4">
-             <h3 className="px-1 text-[11px] font-bold text-gray-400 uppercase tracking-[0.1em]">
-                Sesión
-              </h3>
+            <h3 className="px-1 text-[11px] font-bold text-gray-400 uppercase tracking-[0.1em]">
+              Sesión
+            </h3>
             <button
               onClick={logout}
               className="w-full flex items-center gap-4 p-4 bg-white hover:bg-red-50 rounded-2xl border border-gray-100 shadow-sm transition-all group group-hover:border-red-100"
@@ -144,7 +144,7 @@ export default function SettingsPage() {
           </div>
 
           <div className="text-center pt-8">
-            <p className="text-[11px] text-gray-400 font-medium">TusGastos v1.0.0</p>
+            <p className="text-[11px] text-gray-400 font-medium">GestionAndo v1.0.0</p>
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@ export default function HogarPage() {
   const [inviteLoading, setInviteLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState('');
   const [createLoading, setCreateLoading] = useState(false);
@@ -76,7 +76,7 @@ export default function HogarPage() {
       setIsCreating(false);
       setNewName('');
       // El backend ya lo marca como activo, recargamos para actualizar todo el estado de la app
-      window.location.reload(); 
+      window.location.reload();
     } catch (err: any) {
       setError(err.message || 'Error al crear hogar');
     } finally {
@@ -104,7 +104,7 @@ export default function HogarPage() {
   function handleWhatsApp() {
     if (!invite) return;
     const senderName = user?.name || user?.phone || 'Alguien';
-    const message = `${senderName} te invitó a compartir los gastos del hogar en TusGastos 💸\n\nRegistrá lo que gastás y vean juntos el total del mes.\n\nUnite desde acá 👇\n${invite.link}`;
+    const message = `${senderName} te invitó a compartir los gastos del hogar en GestionAndo 💸\n\nRegistrá lo que gastás y vean juntos el total del mes.\n\nUnite desde acá 👇\n${invite.link}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
   }
 
@@ -134,7 +134,7 @@ export default function HogarPage() {
           <div className="flex items-center justify-between px-1">
             <h2 className="text-[13px] font-bold text-gray-800 uppercase tracking-wider">Mis Hogares</h2>
             {user?.plan === 'PREMIUM' && (
-              <button 
+              <button
                 onClick={() => setIsCreating(true)}
                 className="text-[12px] font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5"
               >
@@ -148,7 +148,7 @@ export default function HogarPage() {
             <div className="bg-white border-2 border-emerald-100 rounded-xl p-4 animate-in fade-in slide-in-from-top-2 duration-200">
               <p className="text-[12px] font-semibold text-gray-700 mb-3">Nuevo hogar</p>
               <div className="flex gap-2">
-                <input 
+                <input
                   autoFocus
                   placeholder="Nombre (ej: Oficina, Playa...)"
                   value={newName}
@@ -156,14 +156,14 @@ export default function HogarPage() {
                   className="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-[13px] focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                   onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
                 />
-                <button 
+                <button
                   onClick={handleCreate}
                   disabled={createLoading || !newName.trim()}
                   className="bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-[13px] font-medium transition-all"
                 >
                   {createLoading ? '...' : 'Crear'}
                 </button>
-                <button 
+                <button
                   onClick={() => setIsCreating(false)}
                   className="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg text-[13px] font-medium transition-all"
                 >
@@ -222,9 +222,8 @@ export default function HogarPage() {
               <h2 className="text-[13px] font-bold text-gray-800 uppercase tracking-wider">
                 Detalles de: <span className="text-emerald-600">{household.name}</span>
               </h2>
-              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${
-                household.plan === 'FREE' ? 'bg-gray-50 border-gray-200 text-gray-500' : 'bg-amber-50 border-amber-200 text-amber-600'
-              }`}>
+              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${household.plan === 'FREE' ? 'bg-gray-50 border-gray-200 text-gray-500' : 'bg-amber-50 border-amber-200 text-amber-600'
+                }`}>
                 {household.plan === 'FREE' ? 'Plan Free' : '✦ Premium'}
               </span>
             </div>
@@ -353,7 +352,7 @@ export default function HogarPage() {
             )}
           </div>
         )}
-        
+
         {error && <p className="text-[12px] text-red-500 text-center font-medium">{error}</p>}
       </div>
     </AppLayout>
