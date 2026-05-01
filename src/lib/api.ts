@@ -134,6 +134,10 @@ export async function createInvite(phone: string): Promise<InviteResponse> {
   });
 }
 
+export async function previewJoin(token: string): Promise<{ householdName: string; inviterName: string; expiresAt: string }> {
+  return request(`/api/household/join?token=${token}`);
+}
+
 export async function joinHousehold(token: string): Promise<{ alreadyMember: boolean; householdName: string }> {
   return request('/api/household/join', {
     method: 'POST',
