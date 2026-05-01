@@ -127,8 +127,11 @@ export async function getHousehold(): Promise<HouseholdInfo> {
   return request('/api/household');
 }
 
-export async function createInvite(): Promise<InviteResponse> {
-  return request('/api/household/invite', { method: 'POST' });
+export async function createInvite(phone: string): Promise<InviteResponse> {
+  return request('/api/household/invite', { 
+    method: 'POST',
+    body: JSON.stringify({ phone })
+  });
 }
 
 export async function joinHousehold(token: string): Promise<{ alreadyMember: boolean; householdName: string }> {
@@ -152,6 +155,13 @@ export async function switchHousehold(householdId: string): Promise<{ success: b
 export async function createHousehold(name: string): Promise<HouseholdInfo> {
   return request('/api/household', {
     method: 'POST',
+    body: JSON.stringify({ name }),
+  });
+}
+
+export async function updateHouseholdName(name: string): Promise<HouseholdInfo> {
+  return request('/api/household/name', {
+    method: 'PUT',
     body: JSON.stringify({ name }),
   });
 }

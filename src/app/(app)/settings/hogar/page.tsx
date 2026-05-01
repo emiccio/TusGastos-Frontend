@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import AppLayout from '@/components/layout/AppLayout';
-import { getHousehold, createInvite, listHouseholds, createHousehold, switchHousehold } from '@/lib/api';
+import { getHousehold, createInvite, listHouseholds, createHousehold, switchHousehold, updateHouseholdName } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
 import type { HouseholdInfo, InviteResponse } from '@/types';
 import { cn } from '@/lib/utils';
@@ -16,6 +16,9 @@ import {
   Plus,
   Lock,
   UserPlus,
+  Pencil,
+  X,
+  Save,
 } from 'lucide-react';
 
 const PLAN_LIMITS: Record<string, number> = {
@@ -36,6 +39,11 @@ export default function HogarPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState('');
   const [createLoading, setCreateLoading] = useState(false);
+  const [phoneToInvite, setPhoneToInvite] = useState('');
+
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editNameValue, setEditNameValue] = useState('');
+  const [editNameLoading, setEditNameLoading] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -56,10 +64,14 @@ export default function HogarPage() {
   useEffect(() => { load(); }, [load]);
 
   async function handleInvite() {
+    if (!phoneToInvite.trim()) {
+      setError('Por favor ingresá un número de teléfono');
+      return;
+    }
     setInviteLoading(true);
     setError(null);
     try {
-      const data = await createInvite();
+      const data = await createInvite(phoneToInvite.trim());
       setInvite(data);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error al crear la invitación');
@@ -81,6 +93,23 @@ export default function HogarPage() {
       setError(err.message || 'Error al crear hogar');
     } finally {
       setCreateLoading(false);
+    }
+  }
+
+  async function handleUpdateName() {
+    if (!editNameValue.trim() || editNameValue.trim() === household?.name) {
+      setIsEditingName(false);
+      return;
+    }
+    setEditNameLoading(true);
+    try {
+      await updateHouseholdName(editNameValue.trim());
+      setIsEditingName(false);
+      window.location.reload();
+    } catch (err: any) {
+      setError(err.message || 'Error al actualizar el nombre');
+    } finally {
+      setEditNameLoading(false);
     }
   }
 
@@ -219,13 +248,52 @@ export default function HogarPage() {
         {household && !loading && (
           <div className="space-y-5 pt-6 border-t border-gray-100">
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-[13px] font-bold text-gray-800 uppercase tracking-wider">
-                Detalles de: <span className="text-emerald-600">{household.name}</span>
-              </h2>
-              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${household.plan === 'FREE' ? 'bg-gray-50 border-gray-200 text-gray-500' : 'bg-amber-50 border-amber-200 text-amber-600'
-                }`}>
-                {household.plan === 'FREE' ? 'Plan Free' : '✦ Premium'}
-              </span>
+              {isEditingName ? (
+                <div className="flex items-center gap-2 flex-1 mr-4">
+                  <input
+                    autoFocus
+                    value={editNameValue}
+                    onChange={(e) => setEditNameValue(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleUpdateName()}
+                    className="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-[13px] font-bold text-gray-800 uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  />
+                  <button
+                    onClick={handleUpdateName}
+                    disabled={editNameLoading || !editNameValue.trim()}
+                    className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors disabled:opacity-50"
+                  >
+                    <Save size={16} />
+                  </button>
+                  <button
+                    onClick={() => setIsEditingName(false)}
+                    disabled={editNameLoading}
+                    className="p-1.5 text-gray-400 hover:bg-gray-50 rounded-md transition-colors disabled:opacity-50"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ) : (
+                <h2 className="text-[13px] font-bold text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                  Detalles de: <span className="text-emerald-600">{household.name}</span>
+                  {household.isOwner && (
+                    <button
+                      onClick={() => {
+                        setEditNameValue(household.name);
+                        setIsEditingName(true);
+                      }}
+                      className="text-gray-400 hover:text-emerald-600 transition-colors"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                  )}
+                </h2>
+              )}
+              {!isEditingName && (
+                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${household.plan === 'FREE' ? 'bg-gray-50 border-gray-200 text-gray-500' : 'bg-amber-50 border-amber-200 text-amber-600'
+                  }`}>
+                  {household.plan === 'FREE' ? 'Plan Free' : '✦ Premium'}
+                </span>
+              )}
             </div>
 
             {/* Members card */}
@@ -289,17 +357,29 @@ export default function HogarPage() {
                     </div>
                   </div>
                 ) : !invite ? (
-                  <button
-                    onClick={handleInvite}
-                    disabled={inviteLoading}
-                    className="flex items-center gap-2 w-full justify-center px-4 py-2.5 bg-gray-900 hover:bg-gray-800 disabled:opacity-50 text-white text-[13px] font-medium rounded-lg transition-all active:scale-95"
-                  >
-                    {inviteLoading
-                      ? <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      : <Plus size={14} strokeWidth={2.5} />
-                    }
-                    {inviteLoading ? 'Generando link...' : 'Generar link de invitación'}
-                  </button>
+                  <div className="space-y-3">
+                    <input
+                      type="tel"
+                      placeholder="Teléfono (ej: 5491166778899)"
+                      value={phoneToInvite}
+                      onChange={(e) => setPhoneToInvite(e.target.value)}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3.5 py-2.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                    />
+                    <button
+                      onClick={handleInvite}
+                      disabled={inviteLoading || !phoneToInvite.trim()}
+                      className="flex items-center gap-2 w-full justify-center px-4 py-2.5 bg-gray-900 hover:bg-gray-800 disabled:opacity-50 text-white text-[13px] font-medium rounded-lg transition-all active:scale-95"
+                    >
+                      {inviteLoading
+                        ? <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        : <Plus size={14} strokeWidth={2.5} />
+                      }
+                      {inviteLoading ? 'Generando link...' : 'Generar link de invitación'}
+                    </button>
+                    <p className="text-[11px] text-gray-400 text-center">
+                      Se vinculará la invitación a este número de teléfono
+                    </p>
+                  </div>
                 ) : (
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5">
