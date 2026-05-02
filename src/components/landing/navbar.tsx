@@ -2,12 +2,14 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
 import { MessageCircle } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#09090b]/80 backdrop-blur-md border-b border-white/5 py-4 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className="font-heading text-2xl font-bold text-white tracking-tight">
+        <Link href="/" className="flex items-center gap-1 font-heading text-2xl font-bold text-white tracking-tight">
+          <Image src="/icons/favicon.png" className='mt-2' alt="GestionAndo" width={56} height={56} />
           Gestion<span className="text-brand">Ando</span>
         </Link>
 

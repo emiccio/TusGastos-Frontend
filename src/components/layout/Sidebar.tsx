@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 
 import HouseholdSelector from '@/components/layout/HouseholdSelector';
+import Image from 'next/image';
 
 const navItems = [
   { href: '/dashboard', label: 'Inicio', icon: LayoutDashboard },
@@ -38,12 +39,12 @@ export default function Sidebar() {
   return (
     <aside className="w-[220px] min-w-[220px] h-screen sticky top-0 bg-gray-950 flex flex-col">
       {/* Logo */}
-      <div className="px-5 pt-6 pb-2 border-b border-white/5">
-        <div className="flex items-center gap-2.5 mb-1">
-          <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center flex-shrink-0">
-            <TrendingUp size={13} className="text-white" strokeWidth={2.5} />
+      <div className="px-2.5 pt-6 pb-2 border-b border-white/5">
+        <div className="flex items-center gap-1 mb-1">
+          <div className="flex items-center justify-center flex-shrink-0">
+            <Image src="/icons/favicon.png" className='mt-1' alt="GestionAndo" width={56} height={56} />
           </div>
-          <p className="text-[16px] font-semibold text-white tracking-tight">GestionAndo</p>
+          <p className="text-[20px] font-semibold text-white tracking-tight">Gestion<span className="text-brand">Ando</span></p>
         </div>
       </div>
 
