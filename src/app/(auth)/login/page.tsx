@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Loader2, MessageCircle, TrendingUp, ShieldCheck, Zap, ArrowLeft } from 'lucide-react';
 import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type Step = 'phone' | 'otp';
 
@@ -214,8 +215,9 @@ export default function LoginPage() {
         <div className="absolute -bottom-32 -right-20 w-80 h-80 rounded-full bg-brand/10 blur-[120px] pointer-events-none" />
 
         <div className="relative z-10">
-          <div className="flex items-center gap-2.5 mb-2">
-            <Link href="/" className="font-heading text-2xl font-bold text-white tracking-tight">
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center font-heading text-2xl font-bold text-white tracking-tight">
+              <Image src="/icons/favicon.png" className='-ml-2 mt-1' alt="GestionAndo" width={56} height={56} />
               Gestion<span className="text-brand">Ando</span>
             </Link>
           </div>
@@ -272,9 +274,12 @@ export default function LoginPage() {
 
           <div className="flex flex-col items-center gap-3 lg:hidden">
             <div className="text-center">
-              <h1 className="text-2xl font-heading font-bold text-white tracking-tight">
-                Gestion<span className="text-brand">Ando</span>
-              </h1>
+              <Link href="/" className="flex items-center">
+                <Image src="/icons/favicon.png" className='mt-2' alt="GestionAndo" width={56} height={56} />
+                <h1 className="text-2xl font-heading font-bold text-white tracking-tight">
+                  Gestion<span className="text-brand">Ando</span>
+                </h1>
+              </Link>
               <p className="text-sm text-zinc-400 font-medium mt-1">Tu asistente financiero personal</p>
             </div>
           </div>

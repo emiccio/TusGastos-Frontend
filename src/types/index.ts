@@ -32,6 +32,12 @@ export interface InviteResponse {
   expiresAt: string;
 }
 
+export interface InvitePreview {
+  householdName: string;
+  inviterName: string;
+  expiresAt: string;
+}
+
 export interface Transaction {
   id: string;
   userId: string;
