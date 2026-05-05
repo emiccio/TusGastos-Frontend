@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/hooks/useAuth';
@@ -18,9 +18,20 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'GestionAndo — Controlá tu plata por WhatsApp',
   description: 'Anotá tus gastos enviando un simple mensaje. Sin apps complicadas, con inteligencia artificial.',
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: '/icons/favicon.png',
+    apple: '/icons/pwa-192.png',
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'GestionAndo',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0f172a',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
