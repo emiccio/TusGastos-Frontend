@@ -2,13 +2,15 @@
 
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import * as Select from '@radix-ui/react-select';
 import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Loader2, MessageCircle, TrendingUp, ShieldCheck, Zap, ArrowLeft } from 'lucide-react';
+import { Loader2, MessageCircle, TrendingUp, ShieldCheck, Zap, ArrowLeft, ChevronDown, Check } from 'lucide-react';
 import { WHATSAPP_DEEP_LINK } from '@/lib/constants';
+import { LOGIN_COUNTRIES, formatPhoneForDisplay, normalizePhoneByCountry } from '@/lib/phone';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -20,6 +22,8 @@ function LoginForm() {
   const searchParams = useSearchParams();
 
   const [step, setStep] = useState<Step>('phone');
+  const [countryCode, setCountryCode] = useState('AR');
+  const [localPhone, setLocalPhone] = useState('');
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,12 +32,14 @@ function LoginForm() {
 
   async function handleRequestOtp(e: React.FormEvent) {
     e.preventDefault();
-    if (!phone.trim()) return;
+    const normalizedPhone = normalizePhoneByCountry(countryCode, localPhone);
+    if (!normalizedPhone.trim()) return;
     setLoading(true);
     setError('');
     setErrorType('default');
     try {
-      await requestOtp(phone.trim());
+      await requestOtp(normalizedPhone);
+      setPhone(normalizedPhone);
       setStep('otp');
     } catch (err: any) {
       setErrorType(err.code || 'default');
@@ -98,7 +104,7 @@ function LoginForm() {
             className="bg-white/5 lg:bg-white border-white/10 lg:border-zinc-200 text-white lg:text-zinc-900 placeholder:text-zinc-600 h-12"
           />
           <p className="text-xs text-zinc-500 lg:text-gray-400 font-medium">
-            Lulú te mandó un código de 6 dígitos al <span className="font-bold text-zinc-300 lg:text-zinc-600">+{phone}</span>
+            Lulú te mandó un código de 6 dígitos al <span className="font-bold text-zinc-300 lg:text-zinc-600">{formatPhoneForDisplay(phone)}</span>
           </p>
         </div>
 
@@ -141,18 +147,60 @@ function LoginForm() {
     <form onSubmit={handleRequestOtp} className="space-y-5">
       <div className="space-y-1.5">
         <Label htmlFor="phone-input" className="text-zinc-400 lg:text-zinc-700">Número de WhatsApp</Label>
-        <Input
-          id="phone-input"
-          type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="ej: 5491112345678"
-          autoComplete="tel"
-          autoFocus
-          className="bg-white/5 lg:bg-white border-white/10 lg:border-zinc-200 text-white lg:text-zinc-900 placeholder:text-zinc-600 h-12"
-        />
+        <div className="grid grid-cols-12 gap-2">
+          <Select.Root
+            value={countryCode}
+            onValueChange={setCountryCode}
+          >
+            <Select.Trigger
+              aria-label="Pais"
+              className="col-span-5 h-12 bg-white/5 lg:bg-white border border-white/10 lg:border-zinc-200 rounded-lg px-3 text-white lg:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-brand/30 flex items-center justify-between"
+            >
+              <Select.Value />
+              <Select.Icon>
+                <ChevronDown className="h-4 w-4 text-zinc-400" />
+              </Select.Icon>
+            </Select.Trigger>
+            <Select.Portal>
+              <Select.Content
+                position="popper"
+                sideOffset={6}
+                className="z-50 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border border-white/10 lg:border-zinc-200 bg-zinc-950 lg:bg-white shadow-2xl"
+              >
+                <Select.Viewport className="p-1">
+                  {LOGIN_COUNTRIES.map((country) => (
+                    <Select.Item
+                      key={country.code}
+                      value={country.code}
+                      className="relative flex h-9 select-none items-center rounded-md px-8 pr-3 text-sm text-zinc-200 lg:text-zinc-700 outline-none cursor-pointer hover:bg-white/5 lg:hover:bg-zinc-100 data-[state=checked]:bg-brand/15 data-[state=checked]:text-white lg:data-[state=checked]:text-zinc-900"
+                    >
+                      <Select.ItemIndicator className="absolute left-2 inline-flex items-center">
+                        <Check className="h-3.5 w-3.5 text-brand" />
+                      </Select.ItemIndicator>
+                      <Select.ItemText>{country.code} +{country.dialCode}</Select.ItemText>
+                    </Select.Item>
+                  ))}
+                </Select.Viewport>
+              </Select.Content>
+            </Select.Portal>
+          </Select.Root>
+          <Input
+            id="phone-input"
+            type="tel"
+            value={localPhone}
+            onChange={(e) => setLocalPhone(e.target.value)}
+            placeholder={countryCode === 'AR' ? '11 1234 5678' : 'Número local'}
+            autoComplete="tel-national"
+            autoFocus
+            className="col-span-7 bg-white/5 lg:bg-white border-white/10 lg:border-zinc-200 text-white lg:text-zinc-900 placeholder:text-zinc-600 h-12"
+          />
+        </div>
         <p className="text-xs text-zinc-500 lg:text-gray-400 font-medium">
-          Código de país + número (sin + ni espacios)
+          {countryCode === 'AR'
+            ? 'Argentina: ingresá el numero sin 0 y sin 15. Nosotros agregamos el 9.'
+            : countryCode === 'MX'
+              ? 'Mexico: ingresá tu numero local y lo completamos automaticamente.'
+              : 'Ingresá tu numero local y completamos el codigo de pais.'}
         </p>
       </div>
 
@@ -191,7 +239,7 @@ function LoginForm() {
         type="submit"
         className="w-full bg-brand-dark hover:bg-brand text-white rounded-lg h-12 font-bold shadow-lg shadow-brand/10 transition-all active:scale-[0.98]"
         size="lg"
-        disabled={loading || !phone.trim()}
+        disabled={loading || !localPhone.trim()}
       >
         {loading ? (
           <>
