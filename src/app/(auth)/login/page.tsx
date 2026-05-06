@@ -110,7 +110,7 @@ function LoginForm() {
 
         {error && (
           <div className="flex items-start gap-2 bg-red-500/10 lg:bg-red-50 border border-red-500/20 lg:border-red-100 text-red-400 lg:text-red-600 text-sm px-3 py-2.5 rounded-lg">
-            <span className="mt-0.5 shrink-0">⚠</span>
+            <span className="mt-0.5 shrink-0">⚠ </span>
             <span>{error}</span>
           </div>
         )}
